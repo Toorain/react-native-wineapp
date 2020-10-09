@@ -8,7 +8,7 @@ const LoginScreen = ({navigation}: any) => {
   const [password, setPassword] = React.useState('');
 
   // TODO : Find a way NOT to import AuthContext from App.tsx but use it anyway. LVL 10
-  const { signIn } = React.useContext(AuthContext);
+  const { signIn }: any = React.useContext(AuthContext);
 
   return (
     <View style={styles.container}>

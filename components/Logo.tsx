@@ -12,10 +12,11 @@ const Logo = () => {
 
 const styles = StyleSheet.create({
   logo: {
-    width: '30%',
-    height: '30%',
+    width: 150,
+    height: 150,
     resizeMode: 'contain',
-    marginBottom: 50
+    marginTop: 70,
+    marginBottom: 20
   }
 });
 

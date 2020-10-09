@@ -1,12 +1,16 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import AsyncStorage, { AsyncStorageStatic } from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
+import ProductsScreen from "./screens/ProductsScreen";
 
+// @ts-ignore
 export const AuthContext = React.createContext();
+let retreivedToken: string;
 
 function SplashScreen() {
   return (
@@ -17,9 +21,9 @@ function SplashScreen() {
 }
 
 const Stack = createStackNavigator();
-export default function App({ navigation }) {
+export default function App({ navigation }: any) {
   const [state, dispatch] = React.useReducer(
-    (prevState: any, action: { type: string; token: string | undefined | any; }) => {
+    (prevState: any, action: { type: string; token: any; }) => {
       switch (action.type) {
         case 'RESTORE_TOKEN':
           return {
@@ -54,7 +58,7 @@ export default function App({ navigation }) {
       let userToken;
 
       try {
-        userToken = await AsyncStorage.getItem('userToke');
+        userToken = await AsyncStorage.getItem('userToken');
       } catch (e) {
         // Restoring token failed
       }
@@ -76,7 +80,7 @@ export default function App({ navigation }) {
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
-        const loginCall = fetch('http://146.59.156.251:3000/auth/login', {
+        fetch('http://146.59.156.251:3000/auth/login', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -89,70 +93,51 @@ export default function App({ navigation }) {
         }).then(res => res.json())
           .then(json => {
             if(json.access_token !== undefined) {
-              return json.access_token;
+              AsyncStorage.setItem('token', json.access_token);
+              return dispatch({ type: 'SIGN_IN', token: json.access_token });
             }
-            return undefined;
+            return dispatch({ type: 'SIGN_IN', token: undefined });
           });
-
-          dispatch({ type: 'SIGN_IN', token: loginCall });
-
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
+      signOut: () => {
+        AsyncStorage.removeItem('token');
+        dispatch({ type: 'SIGN_OUT', token: '' });
+      },
       signUp: async (data: { username: string; password: string; }) => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
-        const loginCall = fetch('http://146.59.156.251:3000/auth/login', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            username: data.username.toLowerCase(),
-            password: data.password.toLowerCase()
-          })
-        }).then(res => res.json())
-          .then(json => {
-            if(json.access_token !== undefined) {
-              alert("I get a token : " + json.access_token);
-              return json.access_token;
-            }
-            return undefined;
-          });
-
-        dispatch({ type: 'SIGN_IN', token: loginCall });
       },
     }),
     []
   );
 
   return (
-    <AuthContext.Provider value={authContext}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          {state.isLoading ? (
-            // We haven't finished checking for the token yet
-            <Stack.Screen name="Splash" component={SplashScreen} />
-          ) : typeof state.userToken == 'string' ? (
-            // No token found, user isn't signed in
-            <Stack.Screen name="Home" component={HomeScreen} />
-          ) : (
-            // User is signed in
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{
-                title: 'Login',
-                // When logging out, a pop animation feels intuitive
-                animationTypeForReplace: state.isSignout ? 'pop' : 'push',
-              }}
-            />
-
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </AuthContext.Provider>
+    <SafeAreaProvider>
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName={'Login'}>
+            {state.isLoading ? (
+              // We haven't finished checking for the token yet
+              <Stack.Screen name="Splash" component={SplashScreen} />
+            ) : typeof state.userToken == 'string' ? (
+              // No token found, user isn't signed in
+              <>
+                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name={"Products"} component={ProductsScreen} />
+              </>
+            ) : (
+              // User is signed in
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{
+                  title: 'Login',
+                  // When logging out, a pop animation feels intuitive
+                  animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                }}
+              />
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthContext.Provider>
+    </SafeAreaProvider>
   );
 }
