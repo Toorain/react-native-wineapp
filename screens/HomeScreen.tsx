@@ -35,7 +35,7 @@ const HomeScreen = ({navigation}: any) => {
             size={40}
             color={"gray"}
             onPress={() => {
-
+              navigation.navigate('ProductsList', { productName : search });
             }
             }
           />
@@ -45,7 +45,7 @@ const HomeScreen = ({navigation}: any) => {
         <TouchableHighlight
           style={styles.margin}
           onPress={() => {
-
+            navigation.navigate('ProductsList');
           }}
         >
           <View>
