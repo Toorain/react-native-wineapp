@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
-import ProductsScreen from "./screens/ProductsScreen";
+import ProductsListScreen from "./screens/ProductsListScreen";
 
 // @ts-ignore
 export const AuthContext = React.createContext();
@@ -121,7 +121,7 @@ export default function App({ navigation }: any) {
               // No token found, user isn't signed in
               <>
                 <Stack.Screen name="Home" component={HomeScreen} />
-                <Stack.Screen name={"Products"} component={ProductsScreen} />
+                <Stack.Screen name={"Products"} component={ProductsListScreen} />
               </>
             ) : (
               // User is signed in
