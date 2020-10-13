@@ -39,7 +39,6 @@ export default class ProductsScreen extends Component<{}, { productList: any }> 
 
 //renderItem
   _renderItem = ({ item }: any) => (
-
     <View style={styles.itemWrapper}>
       <View style={styles.imageWrapper}>
         <Image style={styles.image} source={require('../assets/images/winelogo.png') }/>
@@ -58,7 +57,7 @@ export default class ProductsScreen extends Component<{}, { productList: any }> 
  
   render() {
     return (
-      <View style={styles.motherWrapper}>
+      <View>
         {this.state.productList !== null ? (
           <FlatList
             numColumns={4}
@@ -66,7 +65,6 @@ export default class ProductsScreen extends Component<{}, { productList: any }> 
             data={this.state.productList}
             renderItem={this._renderItem}
             keyExtractor={ item => item._id }
-            style={styles.mainWrapper}
           />
           ): (
             <Text>No products or error</Text>
@@ -77,15 +75,6 @@ export default class ProductsScreen extends Component<{}, { productList: any }> 
 }
 
 const styles = StyleSheet.create({
-  motherWrapper: {
-    flex:1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  mainWrapper: {
-    flex: 1,
-    width: '45%',
-  },
   itemWrapper: {
     // width: '45%',
     width:300,
