@@ -78,7 +78,9 @@ const styles = StyleSheet.create({
   main: {
   },
   itemWrapper: {
-    width: 300,
+    flex: 1,
+    maxWidth: 300,
+    minWidth: 300,
     margin: 20,
     borderColor: 'black',
     borderWidth: 1,
