@@ -40,7 +40,7 @@ const HomeScreen = ({navigation}: any) => {
         <TouchableHighlight
           style={styles.margin}
           onPress={() => {
-
+            navigation.navigate('Products');
           }}
         >
           <View>

@@ -133,8 +133,6 @@ export default function App({ navigation }: any) {
                 <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen name="Econome" component={EconomeScreen} />
                 <Stack.Screen name="Products" component={ProductsScreen} />
-
-
               </>
             ) : (
               // No token found, user isn't signed in
