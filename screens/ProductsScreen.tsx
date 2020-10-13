@@ -41,7 +41,7 @@ export default class ProductsScreen extends Component<{}, { productList: any }> 
   _renderItem = ({ item }: any) => (
     <View style={styles.itemWrapper}>
       <View style={styles.imageWrapper}>
-        <Image style={styles.image} source={require('../assets/images/winelogo.png') }/>
+        <Image style={styles.image} source={require('../assets/images/bouteille1.png') }/>
       </View>
       <View style={styles.textWrapper}>
         <Text>{item.brand_name}</Text>
@@ -54,13 +54,13 @@ export default class ProductsScreen extends Component<{}, { productList: any }> 
       </View>
     </View>
   )
- 
+
   render() {
     return (
-      <View>
+      <View style={styles.main}>
         {this.state.productList !== null ? (
           <FlatList
-            numColumns={4}
+            numColumns={3}
             columnWrapperStyle={{ flexWrap: 'wrap'}}
             data={this.state.productList}
             renderItem={this._renderItem}
@@ -75,10 +75,10 @@ export default class ProductsScreen extends Component<{}, { productList: any }> 
 }
 
 const styles = StyleSheet.create({
+  main: {
+  },
   itemWrapper: {
-    // width: '45%',
-    width:300,
-    minWidth: 300,
+    width: 300,
     margin: 20,
     borderColor: 'black',
     borderWidth: 1,
@@ -86,20 +86,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   image: {
-    height: 180,
-    width: 100,
+    height: 200,
+    width: 50,
     margin: 30,
     resizeMode: "contain"
   },
   textWrapper: {
-    width: "80%",
+    flex: 2,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
     borderColor: 'red'
   },
   imageWrapper: {
-    width: "20%",
+    flex: 1
   },
   bottomInfo: {
 
