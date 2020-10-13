@@ -1,21 +1,16 @@
 import {View, StyleSheet, TextInput, TouchableHighlight, Text} from "react-native";
 import { Icon } from 'react-native-elements';
-import React from "react";
+import React, {useEffect} from "react";
 import {AuthContext} from "../App";
 import AsyncStorage from "@react-native-community/async-storage";
 import Logo from "../components/Logo";
+import * as SecureStore from 'expo-secure-store';
 
 const HomeScreen = ({navigation}: any) => {
   const { signOut }: any = React.useContext(AuthContext);
   const [search, setSearch] = React.useState('');
+  const [value, setValue] = React.useState('');
 
-  AsyncStorage
-    .getItem('token')
-    .then(keyValue => {
-      console.log(keyValue);
-    }, error => {
-      console.log(error);
-    });
   return (
     <View style={styles.container}>
       <Logo />
@@ -45,7 +40,7 @@ const HomeScreen = ({navigation}: any) => {
         <TouchableHighlight
           style={styles.margin}
           onPress={() => {
-
+            navigation.navigate('Products');
           }}
         >
           <View>

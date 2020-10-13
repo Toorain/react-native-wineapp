@@ -1,22 +1,64 @@
-import { View, StyleSheet, TextInput, TouchableHighlight, Text} from "react-native";
-import React from "react";
-import Logo from "../components/Logo";
-import {AuthContext} from "../App";
+import { FlatList, StyleSheet, Text, View} from "react-native";
+import React, {Component} from "react";
+import AsyncStorage from "@react-native-community/async-storage";
 
-const ProductsScreen = ({navigation}: any) => {
+export default class ProductsScreen extends Component<{}, { productList: any }> {
+  constructor() {
+    // @ts-ignore
+    super();
+    this.state = {
+      productList: []
+    }
+  }
 
-  // TODO : Find a way NOT to import AuthContext from App.tsx but use it anyway. LVL 10
-  const { signIn }: any = React.useContext(AuthContext);
+  getTokenFunction = () => {
+    AsyncStorage.getItem('token').then(value => {
+      this.getAllItems(value);
+    });
+  }
 
-  return (
-    <View>
-      <Text>Test</Text>
-    </View>
-  )
+  getAllItems = (token: string | null) => {
+    fetch('http://146.59.156.251:3000/products/getAll', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+    }).then(res => res.json())
+      .then(json => {
+        this.setState({ productList: json });
+        console.log(json);
+        console.log('GetAllItems');
+      });
+  }
+// When component is loaded
+  async componentDidMount() {
+    this.getTokenFunction();
+  }
+
+  render() {
+    return (
+      <View>
+        {this.state.productList !== null ? (
+          <FlatList
+            data={this.state.productList}
+            renderItem={({ item }) =>
+              <View>
+                <Text>{ item.brand_name }</Text>
+                <Text>{ item.color }</Text>
+              </View>
+            }
+            keyExtractor={ item => item._id }
+          />
+          ): (
+            <Text>No products or error</Text>
+        )}
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
 
-});
-
-export default ProductsScreen
+})
