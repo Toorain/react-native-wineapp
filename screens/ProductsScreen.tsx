@@ -37,6 +37,7 @@ export default class ProductsScreen extends Component<{}, { productList: any }> 
     this.getTokenFunction();
   }
 
+//renderItem
   _renderItem = ({ item }: any) => (
     <View style={styles.wrapper}>
       <View style={styles.imageWrapper}>
