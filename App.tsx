@@ -3,10 +3,12 @@ import { Text, View} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
 import ProductsScreen from "./screens/ProductsScreen";
+import EconomeScreen from "./screens/EconomeScreen";
 
 // @ts-ignore
 export const AuthContext = React.createContext();
@@ -93,7 +95,14 @@ export default function App({ navigation }: any) {
         }).then(res => res.json())
           .then(json => {
             if(json.access_token !== undefined) {
-              AsyncStorage.setItem('token', json.access_token);
+              const save = async () => {
+                try {
+                  await AsyncStorage.setItem('token', json.access_token);
+                } catch (err) {
+                  alert(err);
+                }
+              }
+              save();
               return dispatch({ type: 'SIGN_IN', token: json.access_token });
             }
             return dispatch({ type: 'SIGN_IN', token: undefined });
@@ -118,13 +127,17 @@ export default function App({ navigation }: any) {
               // We haven't finished checking for the token yet
               <Stack.Screen name="Splash" component={SplashScreen} />
             ) : typeof state.userToken == 'string' ? (
-              // No token found, user isn't signed in
+              // User is signed in
+              // If logged in, goes into the first Stack.Screen
               <>
                 <Stack.Screen name="Home" component={HomeScreen} />
-                <Stack.Screen name={"Products"} component={ProductsScreen} />
+                <Stack.Screen name="Econome" component={EconomeScreen} />
+                <Stack.Screen name="Products" component={ProductsScreen} />
+
+
               </>
             ) : (
-              // User is signed in
+              // No token found, user isn't signed in
               <Stack.Screen
                 name="Login"
                 component={LoginScreen}
