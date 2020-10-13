@@ -32,7 +32,7 @@ export default class ProductsScreen extends Component<{}, { productList: any }> 
         console.log('GetAllItems');
       });
   }
-
+// When component is loaded
   async componentDidMount() {
     this.getTokenFunction();
   }
