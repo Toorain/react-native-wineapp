@@ -1,42 +1,40 @@
-import {Button, FlatList, StyleSheet, Text, View} from "react-native";
+import { FlatList, StyleSheet, Text, View} from "react-native";
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 
-export default class ProductsScreen extends Component<{}, { getValue: string | null, productList: any }> {
+export default class ProductsScreen extends Component<{}, { productList: any }> {
   constructor() {
     // @ts-ignore
     super();
     this.state = {
-      getValue: '',
       productList: []
     }
-    this.getValueFunction();
-    this.getAllItems();
   }
 
-  getValueFunction = () => {
+  getTokenFunction = () => {
     AsyncStorage.getItem('token').then(value => {
-      this.setState({ getValue: value });
-    })
+      this.getAllItems(value);
+    });
   }
 
-  getAllItems = () => {
+  getAllItems = (token: string | null) => {
     fetch('http://146.59.156.251:3000/products/getAll', {
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImwiLCJzdWIiOiI1Zjg1NTVlOWE0MzJhODllZjUyMmU1MjciLCJyb2xlcyI6WyJhZG1pbiIsInNhbGxlIiwiZWNvbm9tZSJdLCJpYXQiOjE2MDI1Nzg5MzAsImV4cCI6MTYwMjU3OTE0MH0.0p9GU0FIZ-_X98wLCoH1dx_1OcSEuXGh4pvJHBD9Lg4',
+        'Authorization': 'Bearer ' + token,
       },
     }).then(res => res.json())
       .then(json => {
         this.setState({ productList: json });
         console.log(json);
+        console.log('GetAllItems');
       });
   }
 
-  componentDidMount() {
-    this.getValueFunction();
+  async componentDidMount() {
+    this.getTokenFunction();
   }
 
   render() {
