@@ -57,9 +57,10 @@ export default class ProductsScreen extends Component<{}, { productList: any }> 
 
   render() {
     return (
-      <View>
+      <View style={styles.main}>
         {this.state.productList !== null ? (
           <FlatList
+            numColumns={1}
             contentContainerStyle={{flexDirection : "row", flexWrap : "wrap"}}
             data={this.state.productList}
             renderItem={this._renderItem}
@@ -74,6 +75,8 @@ export default class ProductsScreen extends Component<{}, { productList: any }> 
 }
 
 const styles = StyleSheet.create({
+  main: {
+  },
   itemWrapper: {
     flex: 1,
     maxWidth: 300,
