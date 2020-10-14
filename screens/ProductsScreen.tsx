@@ -50,13 +50,16 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
             source={require('../assets/images/bouteille1.png') }/>
         </TouchableOpacity>
       </View>
-      <View style={styles.textWrapper}>
+      <TouchableOpacity style={styles.textWrapper} onPress={() => {
+        // @ts-ignore
+        this.props.navigation.navigate('ProductsDetails', item);
+      }}>
         <CapitalizedText style={styles.textTitle}>{item.brand_name}</CapitalizedText>
-        <Text style={styles.text}>{item.year}</Text>
-        <CapitalizedText style={styles.text}>{item.color}</CapitalizedText>
-        <Text style={styles.importantInfoText}>{item.sell_price_ht} €</Text>
-        <Text style={styles.importantInfoText}>Qté : {item.quantity}</Text>
-      </View>
+          <Text style={styles.text}>{item.year}</Text>
+          <CapitalizedText style={styles.text}>{item.color}</CapitalizedText>
+          <Text style={styles.importantInfoText}>{item.sell_price_ht} €</Text>
+          <Text style={styles.importantInfoText}>Qté : {item.quantity}</Text>
+      </TouchableOpacity>
     </View>
   )
 
