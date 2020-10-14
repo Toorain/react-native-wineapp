@@ -64,9 +64,10 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
         const itemWidth = 335
         const numColumns = Math.floor(width/itemWidth)
         this.setState({  numColumns: numColumns })
-      }}>
+      }}
+      style={styles.flatlist}
+      >
         {this.state.productList !== null ? (
-           <View style={styles.flatlist}>
             <FlatList
               // contentContainerStyle={styles.flatlist}
               // columnWrapperStyle={{ flexWrap: 'wrap', flexDirection: "row"}}
@@ -76,7 +77,6 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
               renderItem={this._renderItem}
               keyExtractor={ item => item._id }
             />
-          </View>
           ): (
             <Text>No products or error</Text>
         )}
@@ -89,13 +89,13 @@ const styles = StyleSheet.create({
   flatlist: {
     // flexDirection : "row",
     // flexGrow: 1,
-    flex:1, 
+    // flex:1, 
     alignItems: 'center',
   },
   main: {
   },
   itemWrapper: {
-    flex: 1,
+    // flex: 1,
     maxWidth: 300,
     minWidth: 300,
     margin: 20,
