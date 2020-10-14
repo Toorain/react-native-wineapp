@@ -15,7 +15,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       item: String,
     }
   }
-  
+
 
   getTokenFunction = () => {
     AsyncStorage.getItem('token').then(value => {
@@ -33,7 +33,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       },
     }).then(res => res.json())
       .then(json => {
-        this.setState({ 
+        this.setState({
           productList: json,
           searchList: json });
       });
@@ -98,7 +98,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
 
   render() {
     return (
-      <View 
+      <View
       onLayout={(event) => {
         const {width} = event.nativeEvent.layout
         // const {width} = Dimensions.get('window')
@@ -108,6 +108,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       }}
       style={styles.flatlist}
       >
+        { this.renderSearchbarHeader() }
         {this.state.productList !== null ? (
             <FlatList
               // contentContainerStyle={styles.flatlist}
@@ -117,7 +118,6 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
               data={this.state.searchList}
               renderItem={this._renderItem}
               keyExtractor={ item => item._id }
-              ListHeaderComponent={this.renderSearchbarHeader}
             />
           ): (
             <Text>No products or error</Text>
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   searchbar: {
-    width: "100%"
+    width: '100%'
   },
   itemWrapper: {
     maxWidth: 300,
