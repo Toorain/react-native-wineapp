@@ -15,6 +15,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       item: String,
     }
   }
+  
 
   getTokenFunction = () => {
     AsyncStorage.getItem('token').then(value => {
@@ -32,16 +33,18 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       },
     }).then(res => res.json())
       .then(json => {
-        this.setState({ productList: json });
+        this.setState({ 
+          productList: json,
+          searchList: json });
       });
   }
 
   searchFilterFunction = (text:string) => {
-    // if (text === ''){
-    //   this.setState({
-    //     item: this.state.productList
-    //   })
-    // }
+    if (text === ""){
+      this.setState({
+        item: this.state.productList
+      })
+    }
     this.setState({
       item: text,
     });
@@ -82,27 +85,13 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
   renderSearchbarHeader = () => {
     return (
       <SearchBar
-        platform="android"
         placeholder="Recherche..."
         lightTheme
         round
         onChangeText={text => this.searchFilterFunction(text)}
         autoCorrect={false}
         value={this.state.searchText}
-      />
-    );
-  };
-
-  
-  renderSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: '86%',
-          backgroundColor: '#CED0CE',
-          marginLeft: '14%',
-        }}
+        containerStyle = {styles.searchbar}
       />
     );
   };
@@ -128,7 +117,6 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
               data={this.state.searchList}
               renderItem={this._renderItem}
               keyExtractor={ item => item._id }
-              ItemSeparatorComponent={this.renderSeparator}
               ListHeaderComponent={this.renderSearchbarHeader}
             />
           ): (
@@ -141,15 +129,12 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
 
 const styles = StyleSheet.create({
   flatlist: {
-    // flexDirection : "row",
-    // flexGrow: 1,
-    // flex:1, 
     alignItems: 'center',
   },
-  main: {
+  searchbar: {
+    width: "100%"
   },
   itemWrapper: {
-    // flex: 1,
     maxWidth: 300,
     minWidth: 300,
     margin: 20,
