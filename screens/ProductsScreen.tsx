@@ -1,17 +1,22 @@
 import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
+import { ListItem, SearchBar } from 'react-native-elements';
 import CapitalizedText from "../components/CapitalizedText";
 
-export default class ProductsScreen extends Component<{}, { productList: any, numColumns: any }> {
+export default class ProductsScreen extends Component<{}, { productList: any, searchList : any, numColumns: any, searchText : any, item : any }> {
   constructor() {
     // @ts-ignore
     super();
     this.state = {
       productList: [],
+      searchList: [],
+      searchText : String,
       numColumns: Number,
+      item: String,
     }
   }
+
 
   getTokenFunction = () => {
     AsyncStorage.getItem('token').then(value => {
@@ -29,9 +34,33 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
       },
     }).then(res => res.json())
       .then(json => {
-        this.setState({ productList: json });
+        this.setState({
+          productList: json,
+          searchList: json });
       });
   }
+
+  searchFilterFunction = (text:string) => {
+    if (text === ""){
+      this.setState({
+        item: this.state.productList
+      })
+    }
+    this.setState({
+      item: text,
+    });
+
+    const newData = this.state.productList.filter((item : any) => {
+      const itemData = item.brand_name.toUpperCase() + item.year + item.color.toUpperCase();
+      const textData = text.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({
+      searchList: newData,
+    });
+  };
+
 // When component is loaded
   async componentDidMount() {
     this.getTokenFunction();
@@ -62,7 +91,19 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
       </TouchableOpacity>
     </View>
   )
-
+  renderSearchbarHeader = () => {
+    return (
+      <SearchBar
+        placeholder="Recherche..."
+        lightTheme
+        round
+        onChangeText={text => this.searchFilterFunction(text)}
+        autoCorrect={false}
+        value={this.state.searchText}
+        containerStyle = {styles.searchbar}
+      />
+    );
+  };
 
   render() {
     return (
@@ -76,13 +117,14 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
       }}
       style={styles.flatlist}
       >
+        { this.renderSearchbarHeader() }
         {this.state.productList !== null ? (
             <FlatList
               // contentContainerStyle={styles.flatlist}
               // columnWrapperStyle={{ flexWrap: 'wrap', flexDirection: "row"}}
               key={this.state.numColumns}
               numColumns={this.state.numColumns}
-              data={this.state.productList}
+              data={this.state.searchList}
               renderItem={this._renderItem}
               keyExtractor={ item => item._id }
             />
@@ -97,6 +139,9 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
 const styles = StyleSheet.create({
   flatlist: {
     alignItems: 'center',
+  },
+  searchbar: {
+    width: '100%'
   },
   text: {
     fontSize: 16,
