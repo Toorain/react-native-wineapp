@@ -37,6 +37,11 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
   }
 
   searchFilterFunction = (text:string) => {
+    // if (text === ''){
+    //   this.setState({
+    //     item: this.state.productList
+    //   })
+    // }
     this.setState({
       item: text,
     });
