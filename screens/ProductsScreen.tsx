@@ -1,6 +1,7 @@
-import {FlatList, Image, StyleSheet, Text, View} from "react-native";
+import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
+import CapitalizedText from "../components/CapitalizedText";
 
 export default class ProductsScreen extends Component<{}, { productList: any, numColumns: any }> {
   constructor() {
@@ -40,16 +41,21 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
   _renderItem = ({ item }: any) => (
     <View style={styles.itemWrapper}>
       <View style={styles.imageWrapper}>
-        <Image style={styles.image} source={require('../assets/images/bouteille1.png') }/>
+        <TouchableOpacity onPress={() => {
+          // @ts-ignore
+          this.props.navigation.navigate('ProductImage', item.brand_name);
+        }}>
+          <Image
+            style={styles.image}
+            source={require('../assets/images/bouteille1.png') }/>
+        </TouchableOpacity>
       </View>
       <View style={styles.textWrapper}>
-        <Text>{item.brand_name}</Text>
-        <Text>{item.year}</Text>
-        <Text>{item.color}</Text>
-        <View style={styles.bottomInfo}>
-          <Text>{item.sell_price_ht} €</Text>
-          <Text>{item.quantity}</Text>
-        </View>
+        <CapitalizedText style={styles.textTitle}>{item.brand_name}</CapitalizedText>
+        <Text style={styles.text}>{item.year}</Text>
+        <CapitalizedText style={styles.text}>{item.color}</CapitalizedText>
+        <Text style={styles.importantInfoText}>{item.sell_price_ht} €</Text>
+        <Text style={styles.importantInfoText}>Qté : {item.quantity}</Text>
       </View>
     </View>
   )
@@ -57,7 +63,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
 
   render() {
     return (
-      <View 
+      <View
       onLayout={(event) => {
         const {width} = event.nativeEvent.layout
         // const {width} = Dimensions.get('window')
@@ -87,15 +93,19 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
 
 const styles = StyleSheet.create({
   flatlist: {
-    // flexDirection : "row",
-    // flexGrow: 1,
-    // flex:1, 
     alignItems: 'center',
   },
-  main: {
+  text: {
+    fontSize: 16,
+  },
+  textTitle: {
+    fontSize: 20,
+    textAlign: "center"
+  },
+  importantInfoText: {
+    fontSize: 20
   },
   itemWrapper: {
-    // flex: 1,
     maxWidth: 300,
     minWidth: 300,
     margin: 20,
@@ -106,21 +116,23 @@ const styles = StyleSheet.create({
   },
   image: {
     height: 200,
-    width: 50,
+    width: 90,
     margin: 30,
     resizeMode: "contain"
   },
   textWrapper: {
     flex: 2,
-    justifyContent: "center",
+    marginTop: 10,
+    justifyContent: "space-around",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: 'red'
   },
   imageWrapper: {
     flex: 1
   },
   bottomInfo: {
-
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 100,
+    marginTop: 10
   },
 })
