@@ -1,14 +1,18 @@
 import {FlatList, Image, StyleSheet, Text, View} from "react-native";
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
+import { ListItem, SearchBar } from 'react-native-elements';
 
-export default class ProductsScreen extends Component<{}, { productList: any, numColumns: any }> {
+export default class ProductsScreen extends Component<{}, { productList: any, searchList : any, numColumns: any, searchText : any, item : any }> {
   constructor() {
     // @ts-ignore
     super();
     this.state = {
       productList: [],
+      searchList: [],
+      searchText : String,
       numColumns: Number,
+      item: String,
     }
   }
 
@@ -31,6 +35,23 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
         this.setState({ productList: json });
       });
   }
+
+  searchFilterFunction = (text:string) => {
+    this.setState({
+      item: text,
+    });
+
+    const newData = this.state.productList.filter((item : any) => {
+      const itemData = item.brand_name.toUpperCase() + item.year + item.color.toUpperCase();
+      const textData = text.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({
+      searchList: newData,
+    });
+  };
+
 // When component is loaded
   async componentDidMount() {
     this.getTokenFunction();
@@ -53,7 +74,33 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
       </View>
     </View>
   )
+  renderSearchbarHeader = () => {
+    return (
+      <SearchBar
+        platform="android"
+        placeholder="Recherche..."
+        lightTheme
+        round
+        onChangeText={text => this.searchFilterFunction(text)}
+        autoCorrect={false}
+        value={this.state.searchText}
+      />
+    );
+  };
 
+  
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: '86%',
+          backgroundColor: '#CED0CE',
+          marginLeft: '14%',
+        }}
+      />
+    );
+  };
 
   render() {
     return (
@@ -73,9 +120,11 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
               // columnWrapperStyle={{ flexWrap: 'wrap', flexDirection: "row"}}
               key={this.state.numColumns}
               numColumns={this.state.numColumns}
-              data={this.state.productList}
+              data={this.state.searchList}
               renderItem={this._renderItem}
               keyExtractor={ item => item._id }
+              ItemSeparatorComponent={this.renderSeparator}
+              ListHeaderComponent={this.renderSearchbarHeader}
             />
           ): (
             <Text>No products or error</Text>
