@@ -2,12 +2,13 @@ import {FlatList, Image, StyleSheet, Text, View} from "react-native";
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 
-export default class ProductsScreen extends Component<{}, { productList: any }> {
+export default class ProductsScreen extends Component<{}, { productList: any, numColumns: any }> {
   constructor() {
     // @ts-ignore
     super();
     this.state = {
-      productList: []
+      productList: [],
+      numColumns: Number,
     }
   }
 
@@ -55,13 +56,24 @@ export default class ProductsScreen extends Component<{}, { productList: any }> 
     </View>
   )
 
+
   render() {
     return (
-      <View style={styles.main}>
+      <View 
+      onLayout={(event) => {
+        const {width} = event.nativeEvent.layout
+        // const {width} = Dimensions.get('window')
+        const itemWidth = 335
+        const numColumns = Math.floor(width/itemWidth)
+        this.setState({  numColumns: numColumns })
+      }}
+      style={styles.flatlist}>
         {this.state.productList !== null ? (
           <FlatList
-            numColumns={1}
-            contentContainerStyle={{flexDirection : "row", flexWrap : "wrap"}}
+            // contentContainerStyle={styles.flatlist}
+            // columnWrapperStyle={{ flexWrap: 'wrap', flexDirection: "row"}}
+            key={this.state.numColumns}
+            numColumns={this.state.numColumns}
             data={this.state.productList}
             renderItem={this._renderItem}
             keyExtractor={ item => item._id }
@@ -75,6 +87,12 @@ export default class ProductsScreen extends Component<{}, { productList: any }> 
 }
 
 const styles = StyleSheet.create({
+  flatlist: {
+    // flexDirection : "row",
+    // flexGrow: 1,
+    flex:1, 
+    alignItems: 'center',
+  },
   main: {
   },
   itemWrapper: {
