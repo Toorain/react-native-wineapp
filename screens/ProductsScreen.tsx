@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
   searchbar: {
     width: '100%'
-
+  },
   text: {
     fontSize: 16,
   },
