@@ -29,8 +29,6 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
     }).then(res => res.json())
       .then(json => {
         this.setState({ productList: json });
-        console.log(json);
-        console.log('GetAllItems');
       });
   }
 // When component is loaded
@@ -66,18 +64,19 @@ export default class ProductsScreen extends Component<{}, { productList: any, nu
         const itemWidth = 335
         const numColumns = Math.floor(width/itemWidth)
         this.setState({  numColumns: numColumns })
-      }}
-      style={styles.flatlist}>
+      }}>
         {this.state.productList !== null ? (
-          <FlatList
-            // contentContainerStyle={styles.flatlist}
-            // columnWrapperStyle={{ flexWrap: 'wrap', flexDirection: "row"}}
-            key={this.state.numColumns}
-            numColumns={this.state.numColumns}
-            data={this.state.productList}
-            renderItem={this._renderItem}
-            keyExtractor={ item => item._id }
-          />
+           <View style={styles.flatlist}>
+            <FlatList
+              // contentContainerStyle={styles.flatlist}
+              // columnWrapperStyle={{ flexWrap: 'wrap', flexDirection: "row"}}
+              key={this.state.numColumns}
+              numColumns={this.state.numColumns}
+              data={this.state.productList}
+              renderItem={this._renderItem}
+              keyExtractor={ item => item._id }
+            />
+          </View>
           ): (
             <Text>No products or error</Text>
         )}
