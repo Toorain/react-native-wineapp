@@ -10,6 +10,7 @@ import HomeScreen from "./screens/HomeScreen";
 import ProductsScreen from "./screens/ProductsScreen";
 import EconomeScreen from "./screens/EconomeScreen";
 import ProductImage from "./screens/ProductImage";
+import ProductsDetails from "./screens/ProductsDetails";
 
 // @ts-ignore
 export const AuthContext = React.createContext();
@@ -131,10 +132,11 @@ export default function App({ navigation }: any) {
               // User is signed in
               // If logged in, goes into the first Stack.Screen
               <>
+                <Stack.Screen name="Products" component={ProductsScreen} />
                 <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen name="Econome" component={EconomeScreen} />
-                <Stack.Screen name="Products" component={ProductsScreen} />
                 <Stack.Screen name="ProductImage" component={ProductImage} />
+                <Stack.Screen name="ProductsDetails" component={ProductsDetails} />
               </>
             ) : (
               // No token found, user isn't signed in

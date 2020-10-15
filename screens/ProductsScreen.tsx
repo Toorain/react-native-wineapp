@@ -1,8 +1,9 @@
-import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Button, FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
-import { ListItem, SearchBar } from 'react-native-elements';
+import { SearchBar } from 'react-native-elements';
 import CapitalizedText from "../components/CapitalizedText";
+import Placeholder from "../components/PlaceholderImage";
 
 export default class ProductsScreen extends Component<{}, { productList: any, searchList : any, numColumns: any, searchText : any, item : any }> {
   constructor() {
@@ -11,9 +12,9 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
     this.state = {
       productList: [],
       searchList: [],
-      searchText : String,
-      numColumns: Number,
-      item: String,
+      searchText : null,
+      numColumns: 0,
+      item: null,
     }
   }
 
@@ -74,18 +75,25 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
           // @ts-ignore
           this.props.navigation.navigate('ProductImage', item.brand_name);
         }}>
-          <Image
-            style={styles.image}
-            source={require('../assets/images/bouteille1.png') }/>
+          { item.product_img !== "" ? (
+            <Image
+              style={styles.image}
+              source={{ uri: 'http://146.59.156.251:3000/images/bottleImg' + item.product_img }} />
+          ) : (
+            <Placeholder style={styles.image} />
+          ) }
         </TouchableOpacity>
       </View>
-      <View style={styles.textWrapper}>
+      <TouchableOpacity style={styles.textWrapper} onPress={() => {
+        // @ts-ignore
+        this.props.navigation.navigate('ProductsDetails', item);
+      }}>
         <CapitalizedText style={styles.textTitle}>{item.brand_name}</CapitalizedText>
-        <Text style={styles.text}>{item.year}</Text>
-        <CapitalizedText style={styles.text}>{item.color}</CapitalizedText>
-        <Text style={styles.importantInfoText}>{item.sell_price_ht} €</Text>
-        <Text style={styles.importantInfoText}>Qté : {item.quantity}</Text>
-      </View>
+          <Text style={styles.text}>{item.year}</Text>
+          <CapitalizedText style={styles.text}>{item.color}</CapitalizedText>
+          <Text style={styles.importantInfoText}>{item.sell_price_ht} €</Text>
+          <Text style={styles.importantInfoText}>Qté : {item.quantity}</Text>
+      </TouchableOpacity>
     </View>
   )
   renderSearchbarHeader = () => {
@@ -106,19 +114,22 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
     return (
       <View
       onLayout={(event) => {
-        const {width} = event.nativeEvent.layout
+        const {width} = event.nativeEvent.layout;
         // const {width} = Dimensions.get('window')
-        const itemWidth = 335
-        const numColumns = Math.floor(width/itemWidth)
+        const itemWidth = 335;
+        const numColumns = Math.floor(width/itemWidth);
         this.setState({  numColumns: numColumns })
       }}
       style={styles.flatlist}
       >
         { this.renderSearchbarHeader() }
+        <Button
+          title={'Ajouter'}
+          onPress={() => {
+
+        }} />
         {this.state.productList !== null ? (
             <FlatList
-              // contentContainerStyle={styles.flatlist}
-              // columnWrapperStyle={{ flexWrap: 'wrap', flexDirection: "row"}}
               key={this.state.numColumns}
               numColumns={this.state.numColumns}
               data={this.state.searchList}
@@ -134,8 +145,14 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
 }
 
 const styles = StyleSheet.create({
+  ajouter : {
+    backgroundColor: 'green',
+
+  },
   flatlist: {
     alignItems: 'center',
+    height: '100%',
+    marginBottom: 100
   },
   searchbar: {
     width: '100%'
