@@ -6,12 +6,13 @@ import CapitalizedText from "../components/CapitalizedText";
 const ProductsDetails = ({navigation, route}: any) => {
   const { signOut }: any = React.useContext(AuthContext);
   const item = route.params;
+  console.log(item.product_img);
 
   return (
     <ScrollView contentContainerStyle={{alignItems: "center"}}>
       <View style={styles.horizontalSplit}>
-        <Image style={styles.bottle} source={require('../assets/images/bouteille1.png')} />
-        <Image style={styles.label} source={require('../assets/images/label1.jpg')} />
+        <Image style={styles.bottle} source={{ uri : 'http://146.59.156.251:3000/images/bottleImg' + item.product_img }} />
+        <Image style={styles.label} source={{ uri : 'http://146.59.156.251:3000/images/labelImg' + item.label_img }} />
       </View>
       <View style={styles.horizontalSplit}>
         <View style={styles.textWrapper}>
@@ -19,12 +20,7 @@ const ProductsDetails = ({navigation, route}: any) => {
           <Text style={styles.text}>Année : {item.year}</Text>
           <Text style={styles.text}>Couleur : <CapitalizedText>{item.color}</CapitalizedText></Text>
           <Text style={styles.textTitle}>Cépages :</Text>
-          { Object.entries(item.cepage).map(([key, val]) =>
-            <View style={styles.center}>
-              <CapitalizedText style={styles.text}>{key}</CapitalizedText>
-              <Text style={styles.text}> : {val}</Text>
-            </View>
-          )}
+
           <Text style={styles.text}>Prix d'achat : {item.buy_price_ht} € | Prix de vente : {item.sell_price_ht} €</Text>
           <Text style={styles.text}>Quantité en stock : {item.quantity}</Text>
         </View>
