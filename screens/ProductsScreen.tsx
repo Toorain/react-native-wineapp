@@ -110,6 +110,24 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
     );
   };
 
+
+  renderHeaderButtonsWrapper = () => {
+    return (
+      <View style= {styles.headerButtonsWrapper}>
+          <Button
+            title={'Ajouter'}
+            onPress={() => {
+
+          }} />
+          <Button
+            title={'Admin'}
+            onPress={() => {
+
+          }} />
+        </View>
+    )
+  }
+
   render() {
     return (
       <View
@@ -123,11 +141,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       style={styles.flatlist}
       >
         { this.renderSearchbarHeader() }
-        <Button
-          title={'Ajouter'}
-          onPress={() => {
-
-        }} />
+        { this.renderHeaderButtonsWrapper()}
         {this.state.productList !== null ? (
             <FlatList
               key={this.state.numColumns}
@@ -145,6 +159,12 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
 }
 
 const styles = StyleSheet.create({
+  headerButtonsWrapper: {
+    flexDirection: 'row',
+    justifyContent: "space-around",
+    width: "45%",
+    alignItems: "center",
+  },
   ajouter : {
     backgroundColor: 'green',
 
