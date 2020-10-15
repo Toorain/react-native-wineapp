@@ -76,6 +76,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
         }}>
           <Image
             style={styles.image}
+            defaultSource={require('../assets/images/placeholder.jpg')}
             source={{ uri: 'http://146.59.156.251:3000/images/bottleImg' + item.product_img }} />
         </TouchableOpacity>
       </View>
@@ -137,6 +138,8 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
 const styles = StyleSheet.create({
   flatlist: {
     alignItems: 'center',
+    height: '100%',
+    marginBottom: 100
   },
   searchbar: {
     width: '100%'
