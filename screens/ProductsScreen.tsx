@@ -1,8 +1,9 @@
-import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Button, FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
-import { ListItem, SearchBar } from 'react-native-elements';
+import { SearchBar } from 'react-native-elements';
 import CapitalizedText from "../components/CapitalizedText";
+import Placeholder from "../components/PlaceholderImage";
 
 export default class ProductsScreen extends Component<{}, { productList: any, searchList : any, numColumns: any, searchText : any, item : any }> {
   constructor() {
@@ -74,10 +75,13 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
           // @ts-ignore
           this.props.navigation.navigate('ProductImage', item.brand_name);
         }}>
-          <Image
-            style={styles.image}
-            defaultSource={require('../assets/images/bouteillePlaceholder.png')}
-            source={{ uri: 'http://146.59.156.251:3000/images/bottleImg' + item.product_img }} />
+          { item.product_img !== "" ? (
+            <Image
+              style={styles.image}
+              source={{ uri: 'http://146.59.156.251:3000/images/bottleImg' + item.product_img }} />
+          ) : (
+            <Placeholder style={styles.image} />
+          ) }
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.textWrapper} onPress={() => {
@@ -119,6 +123,11 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       style={styles.flatlist}
       >
         { this.renderSearchbarHeader() }
+        <Button
+          title={'Ajouter'}
+          onPress={() => {
+
+        }} />
         {this.state.productList !== null ? (
             <FlatList
               key={this.state.numColumns}
@@ -136,6 +145,10 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
 }
 
 const styles = StyleSheet.create({
+  ajouter : {
+    backgroundColor: 'green',
+
+  },
   flatlist: {
     alignItems: 'center',
     height: '100%',
