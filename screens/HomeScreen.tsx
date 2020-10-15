@@ -1,15 +1,12 @@
 import {View, StyleSheet, TextInput, TouchableHighlight, Text} from "react-native";
 import { Icon } from 'react-native-elements';
-import React, {useEffect} from "react";
+import React from "react";
 import {AuthContext} from "../App";
-import AsyncStorage from "@react-native-community/async-storage";
 import Logo from "../components/Logo";
-import * as SecureStore from 'expo-secure-store';
 
 const HomeScreen = ({navigation}: any) => {
   const { signOut }: any = React.useContext(AuthContext);
   const [search, setSearch] = React.useState('');
-  const [value, setValue] = React.useState('');
 
   return (
     <View style={styles.container}>

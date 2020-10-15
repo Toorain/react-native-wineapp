@@ -11,9 +11,9 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
     this.state = {
       productList: [],
       searchList: [],
-      searchText : String,
-      numColumns: Number,
-      item: String,
+      searchText : '',
+      numColumns: 0,
+      item: '',
     }
   }
 
@@ -109,19 +109,17 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
     return (
       <View
       onLayout={(event) => {
-        const {width} = event.nativeEvent.layout
+        const {width} = event.nativeEvent.layout;
         // const {width} = Dimensions.get('window')
-        const itemWidth = 335
-        const numColumns = Math.floor(width/itemWidth)
-        this.setState({  numColumns: numColumns })
+        const itemWidth = 335;
+        const numColumns = Math.floor(width/itemWidth);
+        this.setState({  numColumns: numColumns });
       }}
       style={styles.flatlist}
       >
         { this.renderSearchbarHeader() }
         {this.state.productList !== null ? (
             <FlatList
-              // contentContainerStyle={styles.flatlist}
-              // columnWrapperStyle={{ flexWrap: 'wrap', flexDirection: "row"}}
               key={this.state.numColumns}
               numColumns={this.state.numColumns}
               data={this.state.searchList}
