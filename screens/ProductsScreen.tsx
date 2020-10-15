@@ -11,9 +11,9 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
     this.state = {
       productList: [],
       searchList: [],
-      searchText : '',
+      searchText : null,
       numColumns: 0,
-      item: '',
+      item: null,
     }
   }
 
@@ -114,7 +114,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
         // const {width} = Dimensions.get('window')
         const itemWidth = 335;
         const numColumns = Math.floor(width/itemWidth);
-        this.setState({  numColumns: numColumns });
+        this.setState({  numColumns: numColumns })
       }}
       style={styles.flatlist}
       >
