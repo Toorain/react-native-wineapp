@@ -76,7 +76,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
         }}>
           <Image
             style={styles.image}
-            defaultSource={require('../assets/images/placeholder.jpg')}
+            defaultSource={require('../assets/images/placeholdBottle.png')}
             source={{ uri: 'http://146.59.156.251:3000/images/bottleImg' + item.product_img }} />
         </TouchableOpacity>
       </View>
