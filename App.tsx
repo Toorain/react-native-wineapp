@@ -11,6 +11,8 @@ import ProductsScreen from "./screens/ProductsScreen";
 import EconomeScreen from "./screens/EconomeScreen";
 import ProductImage from "./screens/ProductImage";
 import ProductsDetails from "./screens/ProductsDetails";
+import AdminScreen from "./screens/AdminScreen";
+
 
 // @ts-ignore
 export const AuthContext = React.createContext();
@@ -137,6 +139,7 @@ export default function App({ navigation }: any) {
                 <Stack.Screen name="Econome" component={EconomeScreen} />
                 <Stack.Screen name="ProductImage" component={ProductImage} />
                 <Stack.Screen name="ProductsDetails" component={ProductsDetails} />
+                <Stack.Screen name="AdminScreen" component={AdminScreen} />
               </>
             ) : (
               // No token found, user isn't signed in
