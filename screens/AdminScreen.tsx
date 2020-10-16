@@ -57,7 +57,14 @@ export default class AdminScreen extends Component<{}, { usersList: any, searchL
     });
 
     const newData = this.state.usersList.filter((item : any) => {
-      const itemData = item.username.toUpperCase() + item.first_name.toUpperCase() + item.last_name.toUpperCase() + + item.roles;
+      const itemData = 
+        item.username.toUpperCase() + 
+        item.first_name.toUpperCase() + 
+        item.last_name.toUpperCase() + 
+        item.roles.forEach((element: string) => {
+          console.log(element);
+          element.toUpperCase();
+      });;
       const textData = text.toUpperCase();
 
       return itemData.indexOf(textData) > -1;
@@ -80,9 +87,12 @@ export default class AdminScreen extends Component<{}, { usersList: any, searchL
         this.props.navigation.navigate('ProductsDetails', item);
       }}>
         <CapitalizedText style={styles.textTitle}>{item.username}</CapitalizedText>
-          <Text style={styles.text}>{item.first_name}</Text>
-          <Text style={styles.text}>{item.last_name}</Text>
-          <Text style={styles.importantInfoText}>roles : {item.roles}</Text>
+          <Text style={styles.text}>Nom : {item.first_name}</Text>
+          <Text style={styles.text}>Prénom : {item.last_name}</Text>
+          <Text style={styles.importantInfoText}>roles : {item.roles.forEach((element : string) => {
+            console.log(element);
+            element + " ";
+          })}</Text>
       </TouchableOpacity>
     </View>
   )
