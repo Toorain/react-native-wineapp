@@ -1,4 +1,4 @@
-import {Button, FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Button, FlatList, Image, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View} from "react-native";
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import { SearchBar } from 'react-native-elements';
@@ -73,7 +73,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       <View style={styles.imageWrapper}>
         <TouchableOpacity onPress={() => {
           // @ts-ignore
-          this.props.navigation.navigate('ProductImage', item.brand_name);
+          this.props.navigation.navigate('ProductImage', item);
         }}>
           { item.product_img !== "" ? (
             <Image
@@ -86,7 +86,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       </View>
       <TouchableOpacity style={styles.textWrapper} onPress={() => {
         // @ts-ignore
-        this.props.navigation.navigate('ProductsDetails', item);
+        this.props.navigation.navigate('ProductsDetails', item );
       }}>
         <CapitalizedText style={styles.textTitle}>{item.brand_name}</CapitalizedText>
           <Text style={styles.text}>{item.year}</Text>
@@ -123,18 +123,22 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       style={styles.flatlist}
       >
         { this.renderSearchbarHeader() }
-        <Button
-          title={'Ajouter'}
+        <TouchableHighlight
+          style={styles.ajouter}
           onPress={() => {
 
-        }} />
+          }} >
+          <View>
+            <Text style={styles.addText}>Ajouter</Text>
+          </View>
+        </TouchableHighlight>
         {this.state.productList !== null ? (
             <FlatList
               key={this.state.numColumns}
               numColumns={this.state.numColumns}
               data={this.state.searchList}
-              renderItem={this._renderItem}
               keyExtractor={ item => item._id }
+              renderItem={this._renderItem}
             />
           ): (
             <Text>No products or error</Text>
@@ -147,7 +151,15 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
 const styles = StyleSheet.create({
   ajouter : {
     backgroundColor: 'green',
-
+    width: '100%',
+    height: 40,
+    textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  addText: {
+    color: 'white',
+    fontSize: 20,
   },
   flatlist: {
     alignItems: 'center',

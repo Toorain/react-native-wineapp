@@ -2,17 +2,25 @@ import {View, StyleSheet, Image, Text, ScrollView} from "react-native";
 import React from "react";
 import {AuthContext} from "../App";
 import CapitalizedText from "../components/CapitalizedText";
+import Placeholder from "../components/PlaceholderImage";
 
 const ProductsDetails = ({navigation, route}: any) => {
   const { signOut }: any = React.useContext(AuthContext);
   const item = route.params;
-  console.log(item.product_img);
 
   return (
     <ScrollView contentContainerStyle={{alignItems: "center"}}>
       <View style={styles.horizontalSplit}>
-        <Image style={styles.bottle} source={{ uri : 'http://146.59.156.251:3000/images/bottleImg' + item.product_img }} />
-        <Image style={styles.label} source={{ uri : 'http://146.59.156.251:3000/images/labelImg' + item.label_img }} />
+        { item.product_img !== '' ? (
+          <Image style={styles.bottle} source={{ uri : 'http://146.59.156.251:3000/images/bottleImg' + item.product_img }} />
+        ) : (
+          <Placeholder style={styles.bottle} />
+        )}
+        { item.label_img !== '' ? (
+          <Image style={styles.label} source={{ uri : 'http://146.59.156.251:3000/images/labelImg' + item.label_img }} />
+        ) : (
+          <Placeholder style={styles.label} />
+        )}
       </View>
       <View style={styles.horizontalSplit}>
         <View style={styles.textWrapper}>
@@ -20,7 +28,12 @@ const ProductsDetails = ({navigation, route}: any) => {
           <Text style={styles.text}>Année : {item.year}</Text>
           <Text style={styles.text}>Couleur : <CapitalizedText>{item.color}</CapitalizedText></Text>
           <Text style={styles.textTitle}>Cépages :</Text>
-
+          { Object.entries(item.cepage).map(([key, val]) =>
+            <View style={styles.center} key={key}>
+              <CapitalizedText style={styles.text}>{key}</CapitalizedText>
+              <Text style={styles.text}> : {val}</Text>
+            </View>
+          )}
           <Text style={styles.text}>Prix d'achat : {item.buy_price_ht} € | Prix de vente : {item.sell_price_ht} €</Text>
           <Text style={styles.text}>Quantité en stock : {item.quantity}</Text>
         </View>
