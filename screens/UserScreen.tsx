@@ -81,13 +81,13 @@ export default class UserScreen extends Component<{}, { usersList: any, searchLi
     <View style={styles.itemWrapper}>
       <TouchableOpacity style={styles.textWrapper} onPress={() => {
         // @ts-ignore
-        this.props.navigation.navigate('UserDetails', item.username);
+        this.props.navigation.navigate('UserDetails', item);
       }}>
         <CapitalizedText style={styles.textTitle}>{item.username}</CapitalizedText>
           <Text style={styles.text}>Nom : {item.first_name}</Text>
           <Text style={styles.text}>Prénom : {item.last_name}</Text>
           <View>
-            {item.roles.map((elm: string) => <Text>{elm}</Text> )}
+            {item.roles.map((elm: string) => <Text key={elm}>{elm}</Text> )}
           </View>
       </TouchableOpacity>
     </View>
