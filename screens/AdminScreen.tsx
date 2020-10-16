@@ -57,7 +57,7 @@ export default class AdminScreen extends Component<{}, { usersList: any, searchL
     });
 
     const newData = this.state.usersList.filter((item : any) => {
-      const itemData = item.brand_name.toUpperCase() + item.year + item.color.toUpperCase();
+      const itemData = item.username.toUpperCase() + item.first_name.toUpperCase() + item.last_name.toUpperCase() + + item.roles;
       const textData = text.toUpperCase();
 
       return itemData.indexOf(textData) > -1;
@@ -152,10 +152,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     width: "45%",
     alignItems: "center",
-  },
-  ajouter : {
-    backgroundColor: 'green',
-
   },
   flatlist: {
     alignItems: 'center',
