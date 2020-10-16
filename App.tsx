@@ -132,7 +132,7 @@ export default function App({ navigation }: any) {
               // User is signed in
               // If logged in, goes into the first Stack.Screen
               <>
-                <Stack.Screen name="AddProduct" component={AddProduct} />
+                <Stack.Screen name="Ajouter un produit" component={AddProduct} />
                 <Stack.Screen name="Products" component={ProductsScreen} />
                 <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen name="Econome" component={EconomeScreen} />
