@@ -32,21 +32,49 @@ const formatDate = (date : string) => {
   return ([day , month, year].join('-') + ', ' + [hour, minutes, seconds].join(':'));
 }
 
+
   return (
     <ScrollView contentContainerStyle={{alignItems: "center"}}>
-      <View style={styles.horizontalSplit}>
-        <View style={styles.textWrapper}>
+      <View style={styles.mainWrapper}> 
           <CapitalizedText style={styles.textMain}>{item.username}</CapitalizedText>
-          <Text style={styles.text}>Prénom : {item.first_name}</Text>
-          <Text style={styles.text}>Nom : {item.last_name}</Text>
-          <View>
-          <Text style={styles.text}>Rôles :</Text>
-            {item.roles.map((elm: string) => <Text style={styles.text} key={elm}>{elm}</Text> )}
+          <View style={styles.separator}></View>
+          <View style={styles.textWrapper}>  
+            <View style={styles.horizontalSplit}>
+              <View style={styles.horizontalColumn}>
+                <Text style={styles.text}>Prénom :</Text>
+                <Text style={styles.text}>Nom :</Text>
+              </View>
+              <View style={styles.horizontalColumn}>
+                <Text style={styles.text}>{item.first_name}</Text>
+                <Text style={styles.text}>{item.last_name}</Text>
+              </View>
+            </View>
           </View>
-          <Text style={styles.text}>Date de création : {formatDate(item.created_at)}</Text>
-          <Text style={styles.text}>Dernière connection : {formatDate(item.last_seen_at)}</Text>
+          <View style={styles.separator}></View>
+          <View style={styles.textWrapper}>
+            <View style={styles.horizontalSplit}>
+              <View style={styles.horizontalColumn}>
+                <Text style={styles.text}>Rôles :</Text>
+              </View>
+              <View style={styles.horizontalColumn}>
+                {item.roles.map((elm: string) => <Text style={styles.text} key={elm}>{"- " + elm}</Text> )}
+              </View>
+            </View>
+          </View>
+          <View style={styles.separator}></View>
+          <View style={styles.textWrapper}>
+            <View style={styles.horizontalSplit}>
+              <View style={styles.horizontalColumn}>
+                <Text style={styles.text}>Créé le :</Text>
+                <Text style={styles.text}>Connecté le :</Text>
+              </View>
+              <View style={styles.horizontalColumn}>
+                <Text style={styles.text}>{formatDate(item.created_at)}</Text>
+                <Text style={styles.text}>{formatDate(item.last_seen_at)}</Text>
+              </View>
+            </View>
+          </View>
         </View>
-      </View>
     </ScrollView>
   )
 }
@@ -54,8 +82,25 @@ const formatDate = (date : string) => {
 const marginElms = 8;
 
 const styles = StyleSheet.create({
-  main: {
+  horizontalColumn: {
+    width: "40%",
+    flex:1,
+    justifyContent: "space-evenly",
+  },
+  separator: {
+    height: 1,
     alignItems: "center",
+    justifyContent: "center",
+    width: '71%',
+    backgroundColor: '#CED0CE',
+    marginLeft: "10%",
+  },
+  roleswrapper: {
+    flex:1,
+    flexDirection:"row",
+  },
+  main: {
+    // alignItems: "center",
   },
   bottle: {
     flex: 1,
@@ -71,14 +116,13 @@ const styles = StyleSheet.create({
   },
   center: {
     flexDirection: "row",
-    alignItems: "center"
+    // alignItems: "center"
   },
   horizontalSplit: {
-    alignItems: "center",
     flexDirection: "row",
-    justifyContent: "space-around",
-    width: '90%',
-    marginTop: '2%'
+    justifyContent: "space-evenly",
+    width: '80%',
+    marginTop: '2%',
   },
   text: {
     fontSize: 18,
@@ -97,9 +141,12 @@ const styles = StyleSheet.create({
   },
 
   textWrapper: {
-    width: '100%',
+    marginLeft: "10%",
+  },
+  mainWrapper: {
+    width: '95%',
+    marginLeft: "7%",
     textAlign: "center",
-    alignItems: "center",
     justifyContent: "space-around"
   }
 });
