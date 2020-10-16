@@ -61,10 +61,7 @@ export default class AdminScreen extends Component<{}, { usersList: any, searchL
         item.username.toUpperCase() + 
         item.first_name.toUpperCase() + 
         item.last_name.toUpperCase() + 
-        item.roles.forEach((element: string) => {
-          console.log(element);
-          element.toUpperCase();
-      });;
+        item.roles.map((elm: string) => elm.toUpperCase());
       const textData = text.toUpperCase();
 
       return itemData.indexOf(textData) > -1;
@@ -89,10 +86,9 @@ export default class AdminScreen extends Component<{}, { usersList: any, searchL
         <CapitalizedText style={styles.textTitle}>{item.username}</CapitalizedText>
           <Text style={styles.text}>Nom : {item.first_name}</Text>
           <Text style={styles.text}>Prénom : {item.last_name}</Text>
-          <Text style={styles.importantInfoText}>roles : {item.roles.forEach((element : string) => {
-            console.log(element);
-            element + " ";
-          })}</Text>
+          <View>
+            {item.roles.map((elm: string) => <Text>{elm}</Text> )}
+          </View>
       </TouchableOpacity>
     </View>
   )
