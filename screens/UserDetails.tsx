@@ -54,7 +54,7 @@ const formatDate = (date : string) => {
           <View style={styles.textWrapper}>
             <View style={styles.horizontalSplit}>
               <View style={styles.horizontalColumn}>
-                <Text style={styles.text}>Rôles :</Text>
+                <Text style={styles.text}>Rôle(s) :</Text>
               </View>
               <View style={styles.horizontalColumn}>
                 {item.roles.map((elm: string) => <Text style={styles.text} key={elm}>{"- " + elm}</Text> )}
