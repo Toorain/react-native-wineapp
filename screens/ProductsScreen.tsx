@@ -122,6 +122,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
           <Button
             title={'Admin'}
             onPress={() => {
+              // @ts-ignore
               this.props.navigation.navigate('Utilisateurs',);
           }} />
         </View>
