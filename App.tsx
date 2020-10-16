@@ -11,8 +11,10 @@ import ProductsScreen from "./screens/ProductsScreen";
 import EconomeScreen from "./screens/EconomeScreen";
 import ProductImage from "./screens/ProductImage";
 import ProductsDetails from "./screens/ProductsDetails";
-import AdminScreen from "./screens/AdminScreen";
+import UserScreen from "./screens/UserScreen";
 import UserCreationScreen from './screens/UserCreationScreen';
+import UserDetails from './screens/UserDetails';
+
 
 
 // @ts-ignore
@@ -140,8 +142,9 @@ export default function App({ navigation }: any) {
                 <Stack.Screen name="Econome" component={EconomeScreen} />
                 <Stack.Screen name="ProductImage" component={ProductImage} />
                 <Stack.Screen name="ProductsDetails" component={ProductsDetails} />
-                <Stack.Screen name="AdminScreen" component={AdminScreen} />
+                <Stack.Screen name="Utilisateurs" component={UserScreen} />
                 <Stack.Screen name="UserCreationScreen" component={UserCreationScreen} />
+                <Stack.Screen name="UserDetails" component={UserDetails} />
               </>
             ) : (
               // No token found, user isn't signed in

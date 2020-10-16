@@ -6,11 +6,11 @@ import { SearchBar } from 'react-native-elements';
 import CapitalizedText from "../components/CapitalizedText";
 import Placeholder from "../components/PlaceholderImage";
 
-// const AdminScreen = ({navigation, route}: any) => {
+// const UserScreen = ({navigation, route}: any) => {
 //   const { signOut }: any = React.useContext(AuthContext);
 
 
-export default class AdminScreen extends Component<{}, { usersList: any, searchList : any, numColumns: any, searchText : any, item : any }> {
+export default class UserScreen extends Component<{}, { usersList: any, searchList : any, numColumns: any, searchText : any, item : any }> {
   constructor() {
     // @ts-ignore
     super();
@@ -81,7 +81,7 @@ export default class AdminScreen extends Component<{}, { usersList: any, searchL
     <View style={styles.itemWrapper}>
       <TouchableOpacity style={styles.textWrapper} onPress={() => {
         // @ts-ignore
-        this.props.navigation.navigate('ProductsDetails', item);
+        this.props.navigation.navigate('UserDetails', item.username);
       }}>
         <CapitalizedText style={styles.textTitle}>{item.username}</CapitalizedText>
           <Text style={styles.text}>Nom : {item.first_name}</Text>
