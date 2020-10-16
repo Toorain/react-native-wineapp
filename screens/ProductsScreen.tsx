@@ -126,10 +126,11 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
         <TouchableHighlight
           style={styles.ajouter}
           onPress={() => {
-
+            // @ts-ignore
+            this.props.navigation.navigate('AddProduct');
           }} >
           <View>
-            <Text style={styles.addText}>Ajouter</Text>
+            <Text style={styles.addText}>Ajouter un produit</Text>
           </View>
         </TouchableHighlight>
         {this.state.productList !== null ? (
