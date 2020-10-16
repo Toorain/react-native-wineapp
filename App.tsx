@@ -12,6 +12,7 @@ import EconomeScreen from "./screens/EconomeScreen";
 import ProductImage from "./screens/ProductImage";
 import ProductsDetails from "./screens/ProductsDetails";
 import AdminScreen from "./screens/AdminScreen";
+import UserCreationScreen from './screens/UserCreationScreen';
 
 
 // @ts-ignore
@@ -140,6 +141,7 @@ export default function App({ navigation }: any) {
                 <Stack.Screen name="ProductImage" component={ProductImage} />
                 <Stack.Screen name="ProductsDetails" component={ProductsDetails} />
                 <Stack.Screen name="AdminScreen" component={AdminScreen} />
+                <Stack.Screen name="UserCreationScreen" component={UserCreationScreen} />
               </>
             ) : (
               // No token found, user isn't signed in
