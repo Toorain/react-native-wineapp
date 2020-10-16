@@ -13,9 +13,9 @@ const AddProduct = ({navigation, route}: any) => {
   const [buy_price_ht, setBuy_price_ht] = React.useState('');
   const [sell_price_ht, setSell_price_ht] = React.useState('');
   const [quantity, setQuantity] = React.useState('');
-  const [, ] = React.useState('');
-  const [, ] = React.useState('');
-  const [, ] = React.useState('');
+  const [riesling, setRiesling ] = React.useState('');
+  const [gewur, setGewur] = React.useState('');
+  const [viognier, setViognier] = React.useState('');
   const [, ] = React.useState('');
   const [, ] = React.useState('');
   const [, ] = React.useState('');
