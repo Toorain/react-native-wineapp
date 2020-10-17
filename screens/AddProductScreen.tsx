@@ -1,4 +1,4 @@
-import {Button, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Alert, Button, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React, {useEffect} from "react";
 import {AuthContext} from "../App";
 import Collapsible from "react-native-collapsible";
@@ -21,7 +21,7 @@ const AddProduct = ({navigation, route}: any) => {
   const [token, setToken]: any = React.useState('');
   const [brand_name, setBrand_name] = React.useState('');
   const [year, setYear] = React.useState('');
-  const [color, setColor] = React.useState('');
+  const [color, setColor] = React.useState('white');
   const [cepage, setCepage] = React.useState('');
   const [cepageChecked, setCepageChecked] = React.useState('white');
   const [buy_price_ht, setBuy_price_ht] = React.useState('');
@@ -118,8 +118,33 @@ const AddProduct = ({navigation, route}: any) => {
           hold: 0,
           active: isEnabled,
         })
-      }).then(res => res.json())
+      }).then(res => {
+        if (res.status === 201) {
+          Alert.alert(
+      'Produit ajouté',
+  'Produit ajouté avec succès',
+    [
+              { text: 'Ok', onPress: () => console.log('Ok') },
+              { text: 'Ajouter une photo', onPress: () => {
+                navigation.navigate('Ajouter une photo');
+              } }
+            ],
+            { cancelable : false }
+          )
+        } else {
+          Alert.alert(
+            'ERREUR',
+            'Le produit existe déjà',
+            [
+              { text: 'Ok', onPress: () => console.log('Ok') }
+            ],
+            { cancelable: false }
+          )
+        }
+        return res.json();
+      })
         .then(json => {
+
           console.log(json);
         })
     }

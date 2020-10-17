@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
-import { SearchBar } from 'react-native-elements';
+import {Icon, SearchBar} from 'react-native-elements';
 import CapitalizedText from "../components/CapitalizedText";
 import Placeholder from "../components/PlaceholderImage";
 
@@ -83,31 +83,52 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
 
 //renderItem
   _renderItem = ({ item }: any) => (
-    <View style={styles.itemWrapper}>
-      <View style={styles.imageWrapper}>
-        <TouchableOpacity onPress={() => {
+    <View>
+      <View style={styles.itemWrapper}>
+        <View style={styles.imageWrapper}>
+          <TouchableOpacity onPress={() => {
+            // @ts-ignore
+            this.props.navigation.navigate('ProductImage', item);
+          }}>
+            { item.product_img !== "" ? (
+              <Image
+                style={styles.image}
+                source={{ uri: 'http://146.59.156.251:3000/images/bottleImg' + item.product_img }} />
+            ) : (
+              <Placeholder style={styles.image} />
+            ) }
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.textWrapper} onPress={() => {
           // @ts-ignore
-          this.props.navigation.navigate('ProductImage', item);
+          this.props.navigation.navigate('ProductsDetails', item );
         }}>
-          { item.product_img !== "" ? (
-            <Image
-              style={styles.image}
-              source={{ uri: 'http://146.59.156.251:3000/images/bottleImg' + item.product_img }} />
-          ) : (
-            <Placeholder style={styles.image} />
-          ) }
+          <CapitalizedText style={styles.textTitle}>{item.brand_name}</CapitalizedText>
+            <Text style={styles.text}>{item.year}</Text>
+            <CapitalizedText style={styles.text}>{item.color}</CapitalizedText>
+            <Text style={styles.importantInfoText}>{item.sell_price_ht} €</Text>
+            <Text style={styles.importantInfoText}>Qté : {item.quantity}</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.textWrapper} onPress={() => {
-        // @ts-ignore
-        this.props.navigation.navigate('ProductsDetails', item );
-      }}>
-        <CapitalizedText style={styles.textTitle}>{item.brand_name}</CapitalizedText>
-          <Text style={styles.text}>{item.year}</Text>
-          <CapitalizedText style={styles.text}>{item.color}</CapitalizedText>
-          <Text style={styles.importantInfoText}>{item.sell_price_ht} €</Text>
-          <Text style={styles.importantInfoText}>Qté : {item.quantity}</Text>
-      </TouchableOpacity>
+      <View style={styles.ecoOptWrap}>
+        <Icon
+          name={'edit'}
+          type={'font-awesome'}
+          color={'gray'}
+          size={40}
+          onPress={() => {
+
+          }}
+        />
+        <Icon
+          name={'trash'}
+          type={'font-awesome'}
+          color={'red'}
+          size={40}
+          onPress={() => {
+          }}
+        />
+      </View>
     </View>
   )
   renderSearchbarHeader = () => {
@@ -182,6 +203,17 @@ const styles = StyleSheet.create({
   addText: {
     color: 'white',
     fontSize: 20,
+  },
+  ecoOptWrap: {
+    flexDirection: "row",
+    padding: 10,
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginHorizontal: 20,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 20,
   },
   flatlist: {
     alignItems: 'center',
