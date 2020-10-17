@@ -1,11 +1,21 @@
-import {Button, FlatList, Image, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View} from "react-native";
+import {
+  Button,
+  FlatList,
+  Image,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View
+} from "react-native";
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import { SearchBar } from 'react-native-elements';
 import CapitalizedText from "../components/CapitalizedText";
 import Placeholder from "../components/PlaceholderImage";
 
-export default class ProductsScreen extends Component<{}, { productList: any, searchList : any, numColumns: any, searchText : any, item : any }> {
+export default class ProductsScreen extends Component<{}, { productList: any, searchList : any, numColumns: any, searchText : any, item : any, refreshing: boolean }> {
   constructor() {
     // @ts-ignore
     super();
@@ -15,9 +25,13 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       searchText : null,
       numColumns: 0,
       item: null,
+      refreshing: false
     }
   }
 
+  _onRefresh = () => {
+    return this.getTokenFunction();
+  }
 
   getTokenFunction = () => {
     AsyncStorage.getItem('token').then(value => {
@@ -127,7 +141,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
           style={styles.ajouter}
           onPress={() => {
             // @ts-ignore
-            this.props.navigation.navigate('AddProduct');
+            this.props.navigation.navigate('Ajouter un produit');
           }} >
           <View>
             <Text style={styles.addText}>Ajouter un produit</Text>
@@ -140,7 +154,14 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
               data={this.state.searchList}
               keyExtractor={ item => item._id }
               renderItem={this._renderItem}
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh.bind(this)}
+                />
+              }
             />
+
           ): (
             <Text>No products or error</Text>
         )}

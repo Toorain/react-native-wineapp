@@ -1,4 +1,4 @@
-import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Button, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React, {useEffect} from "react";
 import {AuthContext} from "../App";
 import Collapsible from "react-native-collapsible";
@@ -14,6 +14,9 @@ const AddProduct = ({navigation, route}: any) => {
       setToken(tokenValue);
     });
   })
+  const [isEnabled, setIsEnabled] = React.useState(true);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
 
   const [token, setToken]: any = React.useState('');
   const [brand_name, setBrand_name] = React.useState('');
@@ -41,9 +44,26 @@ const AddProduct = ({navigation, route}: any) => {
 /*&& riesling !== '' && gewur !== '' && viognier !== '' && chenin !== '' && chardonnay !== '' && sauvignon !== ''
   && cabernetSauvignon !== '' && cabernetFranc !== '' && pinotNoir !== '' && merlot !== '' && syrah !== '' && grenache !== ''*/
 
-  const getCepages = () => {
+  const resetCepages = (color: string) => {
     // const cepagesNames = ['riesling', 'gewur', 'viognier', 'chenin', 'chardonnay', 'sauvignon', 'cabernetSauvignon', 'cabernetFranc', 'pinotNoir', 'merlot', 'syrah', 'grenache'];
+    if (color === 'white') {
+      setRiesling('');
+      setGewur('');
+      setViognier('');
+      setChenin('');
+      setChardonnay('');
+      setSauvignon('');
+    } else {
+      setCabernetSauvignon('');
+      setCabernetFranc('');
+      setPinotNoir('');
+      setMerlot('');
+      setSyrah('');
+      setGrenache('');
+    }
+  }
 
+  const getCepages = () => {
     return {
       riesling: riesling !== '' ? riesling : null,
       gewurztraminer: gewur !== '' ? gewur : null,
@@ -51,9 +71,9 @@ const AddProduct = ({navigation, route}: any) => {
       chenin: chenin !== '' ? chenin : null,
       chardonnay: chardonnay !== '' ? chardonnay : null,
       sauvignon: sauvignon !== '' ? sauvignon : null,
-      cabernetSauvignon: cabernetSauvignon !== '' ? cabernetSauvignon : null,
-      cabernetFranc: cabernetFranc !== '' ? cabernetFranc : null,
-      pinotNoir: pinotNoir !== '' ? pinotNoir : null,
+      cabernet_sauvignon: cabernetSauvignon !== '' ? cabernetSauvignon : null,
+      cabernet_franc: cabernetFranc !== '' ? cabernetFranc : null,
+      pinot_noir: pinotNoir !== '' ? pinotNoir : null,
       merlot: merlot !== '' ? merlot : null,
       syrah: syrah !== '' ? syrah : null,
       grenache: grenache !== '' ? grenache : null
@@ -69,17 +89,16 @@ const AddProduct = ({navigation, route}: any) => {
   }
 
   const checkFormAndValid = () => {
-    const cepagesObj: any =  getCepages();
+    let cepagesObj: any =  getCepages();
     for (const elm in cepagesObj) {
       if (cepagesObj[elm] === null) {
         delete cepagesObj[elm];
       }
     }
-    console.log(cepagesObj);
     if (brand_name !== '' && year !== '' && color !== ''
       && buy_price_ht !== '' && sell_price_ht !== '' && quantity !== '')
     {
-      fetch('http://146.59.156.251:3000/products/getAll', {
+      fetch('http://146.59.156.251:3000/products/add', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -90,10 +109,19 @@ const AddProduct = ({navigation, route}: any) => {
           brand_name: brand_name,
           year: year,
           color: color,
-
+          cepage: cepagesObj,
+          label_img: '',
+          product_img: '',
+          buy_price_ht: buy_price_ht,
+          sell_price_ht: sell_price_ht,
+          quantity: quantity,
+          hold: 0,
+          active: isEnabled,
         })
       }).then(res => res.json())
-        .then(json => {})
+        .then(json => {
+          console.log(json);
+        })
     }
   }
 
@@ -125,6 +153,7 @@ const AddProduct = ({navigation, route}: any) => {
           <Text style={styles.description}>Couleur</Text>
           <View style={styles.blockRadio}>
             <TouchableOpacity onPress={() => {
+              resetCepages('red');
               setCepageChecked('white');
               setColor('blanc')
               toggleExpandedWhite(false);
@@ -139,6 +168,7 @@ const AddProduct = ({navigation, route}: any) => {
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
+                resetCepages('white');
                 setCepageChecked('red');
                 setColor('rouge')
                 toggleExpandedWhite(true);
@@ -153,6 +183,7 @@ const AddProduct = ({navigation, route}: any) => {
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
+                resetCepages('white');
                 setCepageChecked('rose');
                 setColor('rose')
                 toggleExpandedWhite(true);
@@ -177,6 +208,7 @@ const AddProduct = ({navigation, route}: any) => {
                   <View style={styles.blockCepage}>
                     <Text style={styles.cepageName}>Riesling</Text>
                     <TextInput
+                      keyboardType={"numeric"}
                       style={styles.textCepage}
                       onChangeText={text => setRiesling(text)}
                       value={riesling}
@@ -185,6 +217,7 @@ const AddProduct = ({navigation, route}: any) => {
                   <View style={styles.blockCepage}>
                     <Text style={styles.cepageName}>Gewürztraminer</Text>
                     <TextInput
+                      keyboardType={"numeric"}
                       style={styles.textCepage}
                       onChangeText={text => setGewur(text)}
                       value={gewur}
@@ -193,6 +226,7 @@ const AddProduct = ({navigation, route}: any) => {
                   <View style={styles.blockCepage}>
                     <Text style={styles.cepageName}>Viognier</Text>
                     <TextInput
+                      keyboardType={"numeric"}
                       style={styles.textCepage}
                       onChangeText={text => setViognier(text)}
                       value={viognier}
@@ -201,6 +235,7 @@ const AddProduct = ({navigation, route}: any) => {
                   <View style={styles.blockCepage}>
                     <Text style={styles.cepageName}>Chenin</Text>
                     <TextInput
+                      keyboardType={"numeric"}
                       style={styles.textCepage}
                       onChangeText={text => setChenin(text)}
                       value={chenin}
@@ -209,6 +244,7 @@ const AddProduct = ({navigation, route}: any) => {
                   <View style={styles.blockCepage}>
                     <Text style={styles.cepageName}>Chardonnay</Text>
                     <TextInput
+                      keyboardType={"numeric"}
                       style={styles.textCepage}
                       onChangeText={text => setChardonnay(text)}
                       value={chardonnay}
@@ -217,17 +253,22 @@ const AddProduct = ({navigation, route}: any) => {
                   <View style={styles.blockCepage}>
                     <Text style={styles.cepageName}>Sauvignon</Text>
                     <TextInput
+                      keyboardType={"numeric"}
                       style={styles.textCepage}
                       onChangeText={text => setSauvignon(text)}
                       value={sauvignon}
                     />
                   </View>
+                  <Button title={'Reset blanc'} onPress={() => {
+                    resetCepages('white');
+                  }} />
                 </Collapsible>
               ) : (
                 <Collapsible collapsed={isCollapsedRed}>
                   <View style={styles.blockCepage}>
                     <Text style={styles.cepageName}>Cabernet-sauvignon</Text>
                     <TextInput
+                      keyboardType={"numeric"}
                       style={styles.textCepage}
                       onChangeText={text => setCabernetSauvignon(text)}
                       value={cabernetSauvignon}
@@ -236,6 +277,7 @@ const AddProduct = ({navigation, route}: any) => {
                   <View style={styles.blockCepage}>
                     <Text style={styles.cepageName}>Cabernet-franc</Text>
                     <TextInput
+                      keyboardType={"numeric"}
                       style={styles.textCepage}
                       onChangeText={text => setCabernetFranc(text)}
                       value={cabernetFranc}
@@ -244,6 +286,7 @@ const AddProduct = ({navigation, route}: any) => {
                   <View style={styles.blockCepage}>
                     <Text style={styles.cepageName}>Pinot Noir</Text>
                     <TextInput
+                      keyboardType={"numeric"}
                       style={styles.textCepage}
                       onChangeText={text => setPinotNoir(text)}
                       value={pinotNoir}
@@ -252,6 +295,7 @@ const AddProduct = ({navigation, route}: any) => {
                   <View style={styles.blockCepage}>
                     <Text style={styles.cepageName}>Merlot</Text>
                     <TextInput
+                      keyboardType={"numeric"}
                       style={styles.textCepage}
                       onChangeText={text => setMerlot(text)}
                       value={merlot}
@@ -260,6 +304,7 @@ const AddProduct = ({navigation, route}: any) => {
                   <View style={styles.blockCepage}>
                     <Text style={styles.cepageName}>Syrah</Text>
                     <TextInput
+                      keyboardType={"numeric"}
                       style={styles.textCepage}
                       onChangeText={text => setSyrah(text)}
                       value={syrah}
@@ -268,11 +313,15 @@ const AddProduct = ({navigation, route}: any) => {
                   <View style={styles.blockCepage}>
                     <Text style={styles.cepageName}>Grenache</Text>
                     <TextInput
+                      keyboardType={"numeric"}
                       style={styles.textCepage}
                       onChangeText={text => setGrenache(text)}
                       value={grenache}
                     />
                   </View>
+                  <Button title={'Reset rouge/rosé'} onPress={() => {
+                    resetCepages('red');
+                  }} />
                 </Collapsible>
               ) }
             </View>
@@ -306,9 +355,21 @@ const AddProduct = ({navigation, route}: any) => {
           />
         </View>
         <View style={styles.block}>
+          <Text style={styles.description}>Actif</Text>
+          <View style={styles.blockActif}>
+            <Text>Inactif</Text>
+            <Switch
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+            <Text>Actif</Text>
+          </View>
+        </View>
+        <View style={styles.block}>
           <Button
             title={'Ajouter le produit'}
-            onPress={() => checkFormAndValid() } />
+            onPress={() => checkFormAndValid() }
+          />
         </View>
       </View>
     </ScrollView>
@@ -321,6 +382,11 @@ const styles = StyleSheet.create({
   },
   blockButton: {
     marginBottom: 20,
+  },
+  blockActif: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around"
   },
   blockCepage: {
     marginVertical: 10,
