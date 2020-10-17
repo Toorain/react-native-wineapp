@@ -89,9 +89,8 @@ const marginElms = 8;
 const styles = StyleSheet.create({
   headerButtonsWrapper: {
     flexDirection: 'row',
-    justifyContent: "space-around",
-    width: "45%",
-    alignItems: "center",
+    justifyContent: "center",
+    width: "96%",
   },
   horizontalColumnRoles: {
     width: "40%",
