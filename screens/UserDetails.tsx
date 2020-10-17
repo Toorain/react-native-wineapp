@@ -79,19 +79,16 @@ const formatDate = (date : string) => {
 }
 
 const marginElms = 8;
-const marginBot = 12;
 
 const styles = StyleSheet.create({
   horizontalColumnRoles: {
     width: "40%",
     flex:1,
-    marginBottom: marginBot,
   },
   horizontalColumn: {
     width: "40%",
     flex:1,
     justifyContent: "space-evenly",
-    marginBottom: marginBot,
   },
   separator: {
     height: 1,
@@ -100,6 +97,8 @@ const styles = StyleSheet.create({
     width: '71%',
     backgroundColor: '#CED0CE',
     marginLeft: "10%",
+    marginTop: 13,
+    marginBottom: 5,
   },
   roleswrapper: {
     flex:1,
@@ -129,7 +128,6 @@ const styles = StyleSheet.create({
     marginVertical: marginElms,
     fontSize: 40,
     textDecorationLine: "underline",
-    marginBottom: marginBot,
     marginLeft: -20,
   },
   textWrapper: {
