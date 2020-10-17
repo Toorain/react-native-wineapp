@@ -53,11 +53,11 @@ const formatDate = (date : string) => {
           <View style={styles.separator}></View>
           <View style={styles.textWrapper}>
             <View style={styles.horizontalSplit}>
-              <View style={styles.horizontalColumn}>
+              <View style={styles.horizontalColumnRoles}>
                 <Text style={styles.text}>Rôle(s) :</Text>
               </View>
               <View style={styles.horizontalColumn}>
-                {item.roles.map((elm: string) => <Text style={styles.text} key={elm}>{"- " + elm}</Text> )}
+                {item.roles.map((elm: string) => <Text style={styles.text} key={elm}>{"▷ " + elm}</Text> )}
               </View>
             </View>
           </View>
@@ -80,12 +80,19 @@ const formatDate = (date : string) => {
 }
 
 const marginElms = 8;
+const marginBot = 12;
 
 const styles = StyleSheet.create({
+  horizontalColumnRoles: {
+    width: "40%",
+    flex:1,
+    marginBottom: marginBot,
+  },
   horizontalColumn: {
     width: "40%",
     flex:1,
     justifyContent: "space-evenly",
+    marginBottom: marginBot,
   },
   separator: {
     height: 1,
@@ -99,24 +106,9 @@ const styles = StyleSheet.create({
     flex:1,
     flexDirection:"row",
   },
-  main: {
-    // alignItems: "center",
-  },
-  bottle: {
-    flex: 1,
-    width: '20%',
-    height: 200,
-    resizeMode: "contain"
-  },
-  label: {
-    flex: 3,
-    width: '80%',
-    height: 250,
-    resizeMode: "contain"
-  },
+
   center: {
     flexDirection: "row",
-    // alignItems: "center"
   },
   horizontalSplit: {
     flexDirection: "row",
@@ -137,9 +129,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginVertical: marginElms,
     fontSize: 40,
-    textDecorationLine: "underline"
+    textDecorationLine: "underline",
+    marginBottom: marginBot,
+    marginLeft: -20,
   },
-
   textWrapper: {
     marginLeft: "10%",
   },
