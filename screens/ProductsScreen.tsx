@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   FlatList,
   Image,
@@ -15,7 +16,7 @@ import {Icon, SearchBar} from 'react-native-elements';
 import CapitalizedText from "../components/CapitalizedText";
 import Placeholder from "../components/PlaceholderImage";
 
-export default class ProductsScreen extends Component<{}, { productList: any, searchList : any, numColumns: any, searchText : any, item : any, refreshing: boolean }> {
+export default class ProductsScreen extends Component<{}, { productList: any, searchList : any, numColumns: any, searchText : any, item : any, refreshing: boolean, token: string }> {
   constructor() {
     // @ts-ignore
     super();
@@ -25,18 +26,48 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       searchText : null,
       numColumns: 0,
       item: null,
-      refreshing: false
+      refreshing: false,
+      token: ''
     }
   }
 
   _onRefresh = () => {
-    return this.getTokenFunction();
+    return this.getTokenFunction('getAll');
   }
 
-  getTokenFunction = () => {
+  getTokenFunction = (action: string, item? : any) => {
     AsyncStorage.getItem('token').then(value => {
-      this.getAllItems(value);
+      switch (action) {
+        case 'getAll':
+          this.getAllItems(value);
+          break;
+        case 'remove':
+          this.removeItem(value, item);
+          break;
+        case 'update':
+          this.editItem(item);
+          break;
+      }
     });
+  }
+
+  editItem = (item: any) => {
+    // @ts-ignore
+    this.props.navigation.navigate('Ajouter un produit', [item, true]);
+  }
+
+  removeItem = (token: string | null, item? : any) => {
+    fetch('http://146.59.156.251:3000/products/remove/' + item._id, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+    }).then(res => res.json())
+      .then(json => {
+
+      });
   }
 
   getAllItems = (token: string | null) => {
@@ -78,7 +109,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
 
 // When component is loaded
   async componentDidMount() {
-    this.getTokenFunction();
+    this.getTokenFunction('getAll');
   }
 
 //renderItem
@@ -126,6 +157,17 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
           color={'red'}
           size={40}
           onPress={() => {
+            Alert.alert('Attention !',
+              'Voulez-vous vraiment supprimer cet élément ?',
+              [
+                { text: 'Non', onPress: () => console.log('Non')},
+                { text: 'Oui', onPress: () => {
+                    this.getTokenFunction('remove', item);
+                    this.setState({refreshing: true});
+                    this._onRefresh();
+                    this.setState({ refreshing: false});
+                  }}
+                ])
           }}
         />
       </View>
@@ -182,7 +224,6 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
                 />
               }
             />
-
           ): (
             <Text>No products or error</Text>
         )}

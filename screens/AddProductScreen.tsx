@@ -10,6 +10,8 @@ const AddProduct = ({navigation, route}: any) => {
   const item = route.params;
 
   useEffect(() => {
+    console.log(item);
+
     AsyncStorage.getItem('token').then(tokenValue => {
       setToken(tokenValue);
     });
