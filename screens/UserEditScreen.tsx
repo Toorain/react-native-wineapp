@@ -33,7 +33,7 @@ const formatDate = (date : string) => {
 
   return (
     <ScrollView contentContainerStyle={{alignItems: "center"}}>
-      <View style={styles.mainWrapper}>
+      <View >
         
     </View>
   </ScrollView>
