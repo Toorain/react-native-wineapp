@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
   },
   mainWrapper: {
     width: '95%',
+    maxWidth: 600,
     marginLeft: "7%",
     textAlign: "center",
     justifyContent: "space-around"
