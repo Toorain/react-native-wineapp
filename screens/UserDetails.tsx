@@ -1,8 +1,7 @@
-import {View, StyleSheet, Image, Text, ScrollView} from "react-native";
+import {View, StyleSheet, Text, ScrollView, Button} from "react-native";
 import React from "react";
 import {AuthContext} from "../App";
 import CapitalizedText from "../components/CapitalizedText";
-import { parse } from "@babel/core";
 
 const UserDetails = ({navigation, route}: any) => {
   const { signOut }: any = React.useContext(AuthContext);
@@ -34,53 +33,66 @@ const formatDate = (date : string) => {
 
   return (
     <ScrollView contentContainerStyle={{alignItems: "center"}}>
-      <View style={styles.mainWrapper}> 
-          <CapitalizedText style={styles.textMain}>{item.username}</CapitalizedText>
-          <View style={styles.separator}></View>
-          <View style={styles.textWrapper}>  
-            <View style={styles.horizontalSplit}>
-              <View style={styles.horizontalColumn}>
-                <Text style={styles.text}>Prénom :</Text>
-                <Text style={styles.text}>Nom :</Text>
-              </View>
-              <View style={styles.horizontalColumn}>
-                <Text style={styles.text}>{item.first_name}</Text>
-                <Text style={styles.text}>{item.last_name}</Text>
-              </View>
-            </View>
+      <View style={styles.mainWrapper}>
+        <View style= {styles.headerButtonsWrapper}>
+          <Button
+            title={'Éditer utilisateur'}
+            onPress={() => {
+              navigation.navigate("EditUser", item);
+          }} />
+        </View>
+      <CapitalizedText style={styles.textMain}>{item.username}</CapitalizedText>
+      <View style={styles.separator}></View>
+      <View style={styles.textWrapper}>  
+        <View style={styles.horizontalSplit}>
+          <View style={styles.horizontalColumn}>
+            <Text style={styles.text}>Prénom :</Text>
+            <Text style={styles.text}>Nom :</Text>
           </View>
-          <View style={styles.separator}></View>
-          <View style={styles.textWrapper}>
-            <View style={styles.horizontalSplit}>
-              <View style={styles.horizontalColumnRoles}>
-                <Text style={styles.text}>Rôle(s) :</Text>
-              </View>
-              <View style={styles.horizontalColumn}>
-                {item.roles.map((elm: string) => <Text style={styles.text} key={elm}>{"▷ " + elm}</Text> )}
-              </View>
-            </View>
-          </View>
-          <View style={styles.separator}></View>
-          <View style={styles.textWrapper}>
-            <View style={styles.horizontalSplit}>
-              <View style={styles.horizontalColumn}>
-                <Text style={styles.text}>Créé le :</Text>
-                <Text style={styles.text}>Connecté le :</Text>
-              </View>
-              <View style={styles.horizontalColumn}>
-                <Text style={styles.text}>{formatDate(item.created_at)}</Text>
-                <Text style={styles.text}>{formatDate(item.last_seen_at)}</Text>
-              </View>
-            </View>
+          <View style={styles.horizontalColumn}>
+            <Text style={styles.text}>{item.first_name}</Text>
+            <Text style={styles.text}>{item.last_name}</Text>
           </View>
         </View>
-    </ScrollView>
+      </View>
+      <View style={styles.separator}></View>
+      <View style={styles.textWrapper}>
+        <View style={styles.horizontalSplit}>
+          <View style={styles.horizontalColumnRoles}>
+            <Text style={styles.text}>Rôle(s) :</Text>
+          </View>
+          <View style={styles.horizontalColumn}>
+            {item.roles.map((elm: string) => <Text style={styles.text} key={elm}>{"▷ " + elm}</Text> )}
+          </View>
+        </View>
+      </View>
+      <View style={styles.separator}></View>
+      <View style={styles.textWrapper}>
+        <View style={styles.horizontalSplit}>
+          <View style={styles.horizontalColumn}>
+            <Text style={styles.text}>Créé le :</Text>
+            <Text style={styles.text}>Connecté le :</Text>
+          </View>
+          <View style={styles.horizontalColumn}>
+            <Text style={styles.text}>{formatDate(item.created_at)}</Text>
+            <Text style={styles.text}>{formatDate(item.last_seen_at)}</Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </ScrollView>
   )
 }
 
 const marginElms = 8;
 
 const styles = StyleSheet.create({
+  headerButtonsWrapper: {
+    flexDirection: 'row',
+    justifyContent: "space-around",
+    width: "45%",
+    alignItems: "center",
+  },
   horizontalColumnRoles: {
     width: "40%",
     flex:1,
