@@ -83,12 +83,27 @@ export default class UserScreen extends Component<{}, { usersList: any, searchLi
         // @ts-ignore
         this.props.navigation.navigate('UserDetails', item);
       }}>
-        <CapitalizedText style={styles.textTitle}>{item.username}</CapitalizedText>
-          <Text style={styles.text}>Nom : {item.first_name}</Text>
-          <Text style={styles.text}>Prénom : {item.last_name}</Text>
-          <View>
-            {item.roles.map((elm: string) => <Text key={elm}>{elm}</Text> )}
+        <CapitalizedText style={styles.textMain}>{item.username}</CapitalizedText>
+        <View style={styles.textWrapper}>  
+          <View style={styles.horizontalSplit}>
+            <View style={styles.horizontalColumn}> 
+              <Text style={styles.text}>Nom :</Text>
+              <Text style={styles.text}>Prénom :</Text>
+            </View>
+            <View style={styles.horizontalColumn}> 
+              <Text style={styles.text}>{item.first_name}</Text>
+              <Text style={styles.text}>{item.last_name}</Text>
+            </View>
           </View>
+          <View style={styles.horizontalSplit}>
+            <View style={styles.horizontalColumnRoles}> 
+              <Text style={styles.text}>Rôle(s) :</Text>
+            </View>
+            <View style={styles.horizontalColumn}>
+              {item.roles.map((elm: string) => <Text key={elm}>{"▷ " + elm}</Text> )}
+            </View>
+          </View>
+        </View>
       </TouchableOpacity>
     </View>
   )
@@ -117,7 +132,7 @@ export default class UserScreen extends Component<{}, { usersList: any, searchLi
               // @ts-ignore
               this.props.navigation.navigate('UserCreationScreen');
           }} />
-        </View>
+      </View>
     )
   }
 
@@ -128,7 +143,7 @@ export default class UserScreen extends Component<{}, { usersList: any, searchLi
       onLayout={(event) => {
         const {width} = event.nativeEvent.layout;
         // const {width} = Dimensions.get('window')
-        const itemWidth = 170;
+        const itemWidth = 335;
         const numColumns = Math.floor(width/itemWidth);
         this.setState({  numColumns: numColumns })
       }}
@@ -153,6 +168,27 @@ export default class UserScreen extends Component<{}, { usersList: any, searchLi
 }
 
 const styles = StyleSheet.create({
+  textMain: {
+    textAlign: "center",
+    marginVertical: 8,
+    fontSize: 25,
+    marginLeft: -40,
+  },
+  horizontalColumnRoles: {
+    width: "40%",
+    flex:1,
+  },
+  horizontalColumn: {
+    width: "50%",
+    flex:1,
+    justifyContent: "space-evenly",
+  },
+  horizontalSplit: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: '90%',
+    marginTop: '3%',
+  },
   headerButtonsWrapper: {
     flexDirection: 'row',
     justifyContent: "space-around",
@@ -162,7 +198,7 @@ const styles = StyleSheet.create({
   flatlist: {
     alignItems: 'center',
     height: '100%',
-    marginBottom: 100
+    marginBottom: 300
   },
   searchbar: {
     width: '100%'
@@ -170,33 +206,21 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
   },
-  textTitle: {
-    fontSize: 20,
-    textAlign: "center"
-  },
   importantInfoText: {
     fontSize: 20
   },
   itemWrapper: {
-    maxWidth: 150,
-    minWidth: 150,
+    maxWidth: 300,
+    minWidth: 300,
     margin: 20,
     borderColor: 'black',
     borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: 7,
     flexDirection: 'row',
   },
-  // image: {
-  //   height: 200,
-  //   width: 90,
-  //   margin: 30,
-  //   resizeMode: "contain"
-  // },
   textWrapper: {
-    flex: 2,
-    marginTop: 10,
-    justifyContent: "space-around",
-    alignItems: "center",
+    marginLeft: "3%",
+    marginBottom: "2%",
   },
   imageWrapper: {
     flex: 1
