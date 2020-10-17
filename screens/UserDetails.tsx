@@ -7,7 +7,6 @@ import { parse } from "@babel/core";
 const UserDetails = ({navigation, route}: any) => {
   const { signOut }: any = React.useContext(AuthContext);
   const item = route.params;
-  console.log(item.username);
 
 const formatDate = (date : string) => {
     var d = new Date(date),
