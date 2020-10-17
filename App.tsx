@@ -14,6 +14,7 @@ import ProductsDetails from "./screens/ProductsDetails";
 import UserScreen from "./screens/UserScreen";
 import UserCreationScreen from './screens/UserCreationScreen';
 import UserDetails from './screens/UserDetails';
+import UserEditScreen from './screens/UserEditScreen';
 
 
 
@@ -142,9 +143,11 @@ export default function App({ navigation }: any) {
                 <Stack.Screen name="Econome" component={EconomeScreen} />
                 <Stack.Screen name="ProductImage" component={ProductImage} />
                 <Stack.Screen name="ProductsDetails" component={ProductsDetails} />
-                <Stack.Screen name="Utilisateurs" component={UserScreen} />
-                <Stack.Screen name="UserCreationScreen" component={UserCreationScreen} />
-                <Stack.Screen name="UserDetails" component={UserDetails} />
+                <Stack.Screen name="Utilisateurs" options={{ title:"Liste d'utilisateurs" }} component={UserScreen} />
+                <Stack.Screen name="UserCreationScreen" options={{ title:"Création utilisateur" }} component={UserCreationScreen} />
+                <Stack.Screen name="UserDetails" options={{ title:"Utilisateur : détail" }} component={UserDetails} />
+                <Stack.Screen name="EditUser" options={{ title:"Éditer utilisateur" }} component={UserEditScreen} />
+                
               </>
             ) : (
               // No token found, user isn't signed in
