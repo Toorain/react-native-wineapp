@@ -67,7 +67,7 @@ export default class UserScreen extends Component<{}, { usersList: any, searchLi
         item.username.toUpperCase() + 
         item.first_name.toUpperCase() + 
         item.last_name.toUpperCase() + 
-        item.roles.map((elm: string) => elm.toUpperCase());
+        item.roles.map((elm: string) => elm);
       const textData = text.toUpperCase();
 
       return itemData.indexOf(textData) > -1;
