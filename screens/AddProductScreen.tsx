@@ -3,7 +3,7 @@ import React, {useEffect} from "react";
 import {AuthContext} from "../App";
 import Collapsible from "react-native-collapsible";
 import {RadioButton} from "react-native-paper";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage, {useAsyncStorage} from "@react-native-community/async-storage";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 const AddProduct = ({navigation, route}: any) => {
@@ -112,7 +112,7 @@ const AddProduct = ({navigation, route}: any) => {
         fetch('http://146.59.156.251:3000/products/add', {
           method: 'POST',
           headers: {
-            Accept: 'application/json',
+            'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token,
           },
@@ -130,6 +130,7 @@ const AddProduct = ({navigation, route}: any) => {
             active: isEnabled,
           })
         }).then(res => {
+          console.log(res);
           if (res.status === 201) {
             Alert.alert(
               'Produit ajouté',
@@ -155,8 +156,7 @@ const AddProduct = ({navigation, route}: any) => {
           return res.json();
         })
           .then(json => {
-
-            console.log(json);
+            AsyncStorage.setItem('_id', json._id);
           })
       }
     } else {

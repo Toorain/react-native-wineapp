@@ -134,7 +134,6 @@ export default function App({ navigation }: any) {
               // User is signed in
               // If logged in, goes into the first Stack.Screen
               <>
-                <Stack.Screen name="Ajouter une photo" component={AddPicture} />
                 <Stack.Screen name="Products" component={ProductsScreen} />
                 <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen name="Econome" component={EconomeScreen} />
@@ -142,6 +141,7 @@ export default function App({ navigation }: any) {
                 <Stack.Screen name="ProductsDetails" component={ProductsDetails} />
                 <Stack.Screen name="Ajouter un produit" component={AddProduct} />
                 <Stack.Screen name="PicturePreview" component={PicturePreview} />
+                <Stack.Screen name="Ajouter une photo" component={AddPicture} />
               </>
             ) : (
               // No token found, user isn't signed in

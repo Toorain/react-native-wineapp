@@ -46,6 +46,7 @@ export default class AddPicture extends React.Component<any, any> {
 
   render() {
     const {hasPermission} = this.state;
+    const { navigation } = this.props;
 
     if (hasPermission === null) {
       return <View/>;
@@ -66,8 +67,7 @@ export default class AddPicture extends React.Component<any, any> {
               }}
               onPress={async () => {
                 const picture: any = await this.camera.takePictureAsync();
-                console.log(picture);
-                this.props.navigation.navigate('PicturePreview', { picture: picture.uri});
+                this.props.navigation.navigate('PicturePreview', { picture: picture.uri });
               }}>
               <Icon name={'camera'} type={'font-awesome'} size={50} color={'white'} />
             </TouchableOpacity>
