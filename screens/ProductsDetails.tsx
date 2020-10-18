@@ -28,12 +28,12 @@ const ProductsDetails = ({navigation, route}: any) => {
           <Text style={styles.text}>Année : {item.year}</Text>
           <Text style={styles.text}>Couleur : <CapitalizedText>{item.color}</CapitalizedText></Text>
           <Text style={styles.textTitle}>Cépages :</Text>
-          { Object.entries(item.cepage).map(([key, val]) =>
+          { item.cepage ? Object.entries(item.cepage).map(([key, val]) =>
             <View style={styles.center} key={key}>
               <CapitalizedText style={styles.text}>{key}</CapitalizedText>
               <Text style={styles.text}> : {val}</Text>
             </View>
-          )}
+          ) : <Text style={styles.text}>Pas de cépages</Text>}
           <Text style={styles.text}>Prix d'achat : {item.buy_price_ht} € | Prix de vente : {item.sell_price_ht} €</Text>
           <Text style={styles.text}>Quantité en stock : {item.quantity}</Text>
         </View>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
   center: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   horizontalSplit: {
     alignItems: "center",

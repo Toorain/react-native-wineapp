@@ -148,7 +148,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
           color={'gray'}
           size={40}
           onPress={() => {
-
+            this.editItem(item);
           }}
         />
         <Icon
