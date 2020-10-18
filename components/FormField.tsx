@@ -29,7 +29,6 @@ const FormField = (props : any) => {
 
 const styles = StyleSheet.create({
   textWrapper: {
-    marginLeft: "10%",
   },
   horizontalSplit: {
     flexDirection: "row",
@@ -38,7 +37,7 @@ const styles = StyleSheet.create({
     marginTop: '2%',
   },
   horizontalColumn: {
-    width: "50%",
+    width: "4%",
     flex:1,
     justifyContent: "space-evenly",
   },
@@ -47,6 +46,7 @@ const styles = StyleSheet.create({
     marginVertical: 8
   },
   formFieldWrapper: {
+
   },
   formFieldText: {
     fontSize: 20,
