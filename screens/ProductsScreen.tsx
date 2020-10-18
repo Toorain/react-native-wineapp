@@ -247,7 +247,8 @@ const styles = StyleSheet.create({
   headerButtonsWrapper: {
     flexDirection: 'row',
     justifyContent: "space-around",
-    width: "45%",
+    width: "38%",
+    minWidth: 230,
     alignItems: "center",
   },
   ajouter : {
