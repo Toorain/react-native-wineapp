@@ -1,5 +1,5 @@
 import React from "react";
-import {View, StyleSheet, Text, ScrollView} from "react-native";
+import {View, StyleSheet, Text, ScrollView, Alert} from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {AuthContext} from "../App";
 import FormField from '../components/FormField';
@@ -16,6 +16,61 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
     last_name:'',
     roles:'',
   })
+
+
+  const checkFormAndValid = () => {
+    let userObj: any =  formValues();
+    for (const elm in userObj) {
+      if (userObj[elm] === null) {
+        delete userObj[elm];
+      }
+    }
+    if (username !== '' && password !== '' && first_name !== ''
+      && last_name !== '' && roles !== '')
+    {
+      fetch('http://146.59.156.251:3000/users/create', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify({
+          username: username,
+          year: year,
+          color: color,
+          cepage: cepagesObj,
+          label_img: '',
+        })
+      }).then(res => {
+        if (res.status === 201) {
+          Alert.alert(
+            'Utilisateur ajouté',
+            'Utilisateur ajouté avec succès',
+              [
+                { text: 'Ok', onPress: () => console.log('Ok') },
+              ],
+            { cancelable : false }
+          )
+        } else {
+          Alert.alert(
+            'ERREUR',
+            "L'utilisateur existe déjà",
+            [
+              { text: 'Ok', onPress: () => console.log('Ok') }
+            ],
+            { cancelable: false }
+          )
+        }
+        return res.json();
+      })
+        .then(json => {
+
+          console.log(json);
+        })
+    }
+  }
+
 
   return (
     <KeyboardAwareScrollView contentContainerStyle={{alignItems: "center"}}>
@@ -65,12 +120,21 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
           <Text style={styles.formText}>last_name is: {formValues.last_name}</Text>
           <Text style={styles.formText}>Roles is: {formValues.roles}</Text>
         </View>
+        <View style={styles.block}>
+          <Button
+            title={'Ajouter le produit'}
+            onPress={() => checkFormAndValid() }
+          />
+        </View>
       </View>
     </KeyboardAwareScrollView>
   )
 }
 
 const styles = StyleSheet.create({
+  block: {
+    padding: 10,
+  },
   container: {
     display: 'flex',
     margin: 20,
