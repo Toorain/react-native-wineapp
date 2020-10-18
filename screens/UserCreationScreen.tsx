@@ -1,9 +1,11 @@
-import React from "react";
-import {View, StyleSheet, Text, ScrollView, Alert, Button} from "react-native";
+import React,{useEffect} from "react";
+import {View, StyleSheet, Text, ScrollView, Alert, Button, AsyncStorage} from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {AuthContext} from "../App";
 import FormField from '../components/FormField';
 import {formData} from '../components/formData';
+import {RadioButton} from "react-native-paper";
+// import Collapsible from "react-native-collapsible";
 
 
 const UserCreationScreen = ({navigation, route}: any, props: any) => {
@@ -14,17 +16,26 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
     password:'',
     first_name:'',
     last_name:'',
-    roles:'',
+    roles:{},
   })
 
+  useEffect(() => {
+    console.log(item);
+
+    AsyncStorage.getItem('token').then((tokenValue: any) => {
+      setToken(tokenValue);
+    });
+  })
+
+  const [token, setToken]: any = React.useState('');
 
   const checkFormAndValid = () => {
-    let userObj: any =  formValues();
-    for (const elm in userObj) {
-      if (userObj[elm] === null) {
-        delete userObj[elm];
-      }
-    }
+    // let userObj: any =  formData();
+    // for (const elm in userObj) {
+    //   if (userObj[elm] === null) {
+    //     delete userObj[elm];
+    //   }
+    // }
     if (formValues.username !== '' && formValues.password !== '' && formValues.first_name !== ''
       && formValues.last_name !== '' && formValues.roles !== '')
     {
@@ -122,7 +133,7 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
         </View> */}
         <View style={styles.block}>
           <Button
-            title={'Ajouter le produit'}
+            title={'Créer nouvel utilisateur'}
             onPress={() => checkFormAndValid() }
           />
         </View>
