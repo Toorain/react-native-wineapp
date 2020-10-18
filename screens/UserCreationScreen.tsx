@@ -128,24 +128,24 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
                         <RadioButton
                           
                           value="salle"
-                          // status={ checked === 'first' ? 'checked' : 'unchecked' }
-                          // onPress={() => setChecked('first')}
+                          status='checked'
+                          onPress={() => setChecked('salle')}
                         />
                         <Text>Salle</Text>
                       </View>
                       <View style={styles.buttonContainer}>
                         <RadioButton
                           value="econome"
-                          // status={ checked === 'second' ? 'checked' : 'unchecked' }
-                          // onPress={() => setChecked('second')}
+                          status='unchecked'
+                          onPress={() => setChecked('econome')}
                         />
                         <Text>Econome</Text>
                       </View>
                       <View style={styles.buttonContainer}>
                         <RadioButton
                           value="admin"
-                          // status={ checked === 'second' ? 'checked' : 'unchecked' }
-                          // onPress={() => setChecked('second')}
+                          status='unchecked'
+                          onPress={() => setChecked('admin')}
                         />
                         <Text>Admin</Text>
                       </View>
