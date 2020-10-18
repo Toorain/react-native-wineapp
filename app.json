@@ -2,9 +2,17 @@
   "name": "react-native-wineapp",
   "displayName": "react-native-wineapp",
   "expo": {
-    "name": "react-native-wineapp",
+    "name": "WineApp",
     "slug": "react-native-wineapp",
     "version": "1.0.0",
+    "ios" : {
+      "bundleIdentifier": "com.wineApp.wineAppCo",
+      "buildNumber": "1.0.0"
+    },
+    "android" : {
+      "package": "com.wineApp.wineAppCo",
+      "versionCode": 1
+    },
     "assetBundlePatterns": [
       "**/*"
     ]

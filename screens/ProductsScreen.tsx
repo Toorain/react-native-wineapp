@@ -1,11 +1,22 @@
-import {Button, FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {
+  Alert,
+  Button,
+  FlatList,
+  Image,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View
+} from "react-native";
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
-import { SearchBar } from 'react-native-elements';
+import {Icon, SearchBar} from 'react-native-elements';
 import CapitalizedText from "../components/CapitalizedText";
 import Placeholder from "../components/PlaceholderImage";
 
-export default class ProductsScreen extends Component<{}, { productList: any, searchList : any, numColumns: any, searchText : any, item : any }> {
+export default class ProductsScreen extends Component<{}, { productList: any, searchList : any, numColumns: any, searchText : any, item : any, refreshing: boolean, token: string }> {
   constructor() {
     // @ts-ignore
     super();
@@ -15,14 +26,48 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       searchText : null,
       numColumns: 0,
       item: null,
+      refreshing: false,
+      token: ''
     }
   }
 
+  _onRefresh = () => {
+    return this.getTokenFunction('getAll');
+  }
 
-  getTokenFunction = () => {
+  getTokenFunction = (action: string, item? : any) => {
     AsyncStorage.getItem('token').then(value => {
-      this.getAllItems(value);
+      switch (action) {
+        case 'getAll':
+          this.getAllItems(value);
+          break;
+        case 'remove':
+          this.removeItem(value, item);
+          break;
+        case 'update':
+          this.editItem(item);
+          break;
+      }
     });
+  }
+
+  editItem = (item: any) => {
+    // @ts-ignore
+    this.props.navigation.navigate('Ajouter un produit', [item, true]);
+  }
+
+  removeItem = (token: string | null, item? : any) => {
+    fetch('http://146.59.156.251:3000/products/remove/' + item._id, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+    }).then(res => res.json())
+      .then(json => {
+
+      });
   }
 
   getAllItems = (token: string | null) => {
@@ -64,36 +109,68 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
 
 // When component is loaded
   async componentDidMount() {
-    this.getTokenFunction();
+    this.getTokenFunction('getAll');
   }
 
 //renderItem
   _renderItem = ({ item }: any) => (
-    <View style={styles.itemWrapper}>
-      <View style={styles.imageWrapper}>
-        <TouchableOpacity onPress={() => {
+    <View>
+      <View style={styles.itemWrapper}>
+        <View style={styles.imageWrapper}>
+          <TouchableOpacity onPress={() => {
+            // @ts-ignore
+            this.props.navigation.navigate('ProductImage', item);
+          }}>
+            { item.product_img !== "" ? (
+              <Image
+                style={styles.image}
+                source={{ uri: 'http://146.59.156.251:3000/images/bottleImg' + item.product_img }} />
+            ) : (
+              <Placeholder style={styles.image} />
+            ) }
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.textWrapper} onPress={() => {
           // @ts-ignore
-          this.props.navigation.navigate('ProductImage', item.brand_name);
+          this.props.navigation.navigate('ProductsDetails', item );
         }}>
-          { item.product_img !== "" ? (
-            <Image
-              style={styles.image}
-              source={{ uri: 'http://146.59.156.251:3000/images/bottleImg' + item.product_img }} />
-          ) : (
-            <Placeholder style={styles.image} />
-          ) }
+          <CapitalizedText style={styles.textTitle}>{item.brand_name}</CapitalizedText>
+            <Text style={styles.text}>{item.year}</Text>
+            <CapitalizedText style={styles.text}>{item.color}</CapitalizedText>
+            <Text style={styles.importantInfoText}>{item.sell_price_ht} €</Text>
+            <Text style={styles.importantInfoText}>Qté : {item.quantity}</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.textWrapper} onPress={() => {
-        // @ts-ignore
-        this.props.navigation.navigate('ProductsDetails', item);
-      }}>
-        <CapitalizedText style={styles.textTitle}>{item.brand_name}</CapitalizedText>
-          <Text style={styles.text}>{item.year}</Text>
-          <CapitalizedText style={styles.text}>{item.color}</CapitalizedText>
-          <Text style={styles.importantInfoText}>{item.sell_price_ht} €</Text>
-          <Text style={styles.importantInfoText}>Qté : {item.quantity}</Text>
-      </TouchableOpacity>
+      <View style={styles.ecoOptWrap}>
+        <Icon
+          name={'edit'}
+          type={'font-awesome'}
+          color={'gray'}
+          size={40}
+          onPress={() => {
+            this.editItem(item);
+          }}
+        />
+        <Icon
+          name={'trash'}
+          type={'font-awesome'}
+          color={'red'}
+          size={40}
+          onPress={() => {
+            Alert.alert('Attention !',
+              'Voulez-vous vraiment supprimer cet élément ?',
+              [
+                { text: 'Non', onPress: () => console.log('Non')},
+                { text: 'Oui', onPress: () => {
+                    this.getTokenFunction('remove', item);
+                    this.setState({refreshing: true});
+                    this._onRefresh();
+                    this.setState({ refreshing: false});
+                  }}
+                ])
+          }}
+        />
+      </View>
     </View>
   )
   renderSearchbarHeader = () => {
@@ -115,9 +192,10 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
     return (
       <View style= {styles.headerButtonsWrapper}>
           <Button
-            title={'Ajouter'}
+            title={'Ajouter Produit'}
             onPress={() => {
-
+            // @ts-ignore
+            this.props.navigation.navigate('Ajouter un produit');
           }} />
           <Button
             title={'Admin'}
@@ -148,8 +226,14 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
               key={this.state.numColumns}
               numColumns={this.state.numColumns}
               data={this.state.searchList}
-              renderItem={this._renderItem}
               keyExtractor={ item => item._id }
+              renderItem={this._renderItem}
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh.bind(this)}
+                />
+              }
             />
           ): (
             <Text>No products or error</Text>
@@ -168,7 +252,26 @@ const styles = StyleSheet.create({
   },
   ajouter : {
     backgroundColor: 'green',
-
+    width: '100%',
+    height: 40,
+    textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  addText: {
+    color: 'white',
+    fontSize: 20,
+  },
+  ecoOptWrap: {
+    flexDirection: "row",
+    padding: 10,
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginHorizontal: 20,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 20,
   },
   flatlist: {
     alignItems: 'center',

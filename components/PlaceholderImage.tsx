@@ -2,6 +2,7 @@ import { StyleSheet, Image } from "react-native";
 import React from "react";
 
 const Placeholder = (props: any) => {
+
   return(
     <Image
       style={props.style}

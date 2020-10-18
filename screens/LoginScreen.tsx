@@ -2,6 +2,7 @@ import { View, StyleSheet, TextInput, TouchableHighlight, Text} from "react-nati
 import React from "react";
 import Logo from "../components/Logo";
 import {AuthContext} from "../App";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 const LoginScreen = ({navigation}: any) => {
   const [username, setUsername] = React.useState('');
@@ -11,33 +12,36 @@ const LoginScreen = ({navigation}: any) => {
   const { signIn }: any = React.useContext(AuthContext);
 
   return (
-    <View style={styles.container}>
-      <Logo />
-      <View style={styles.box}>
-        <TextInput
-          style={styles.formInput}
-          onChangeText={setUsername}
-          value={username}
-          placeholder={'Login'}
-        />
-      </View>
-      <View style={styles.box}>
-        <TextInput
-          style={styles.formInput}
-          onChangeText={setPassword}
-          value={password}
-          placeholder={'Password'}
-        />
-      </View>
-      <TouchableHighlight
-        onPress={() => signIn({username, password})}
-        style={styles.button}
-      >
-        <View>
-          <Text style={styles.text}>Valider</Text>
+    <KeyboardAwareScrollView>
+      <View style={styles.container}>
+        <Logo />
+        <View style={styles.box}>
+          <TextInput
+            style={styles.formInput}
+            onChangeText={setUsername}
+            value={username}
+            placeholder={'Login'}
+          />
         </View>
-      </TouchableHighlight>
-    </View>
+        <View style={styles.box}>
+          <TextInput
+            style={styles.formInput}
+            onChangeText={setPassword}
+            value={password}
+            secureTextEntry={true}
+            placeholder={'Password'}
+          />
+        </View>
+        <TouchableHighlight
+          onPress={() => signIn({username, password})}
+          style={styles.button}
+        >
+          <View>
+            <Text style={styles.text}>Valider</Text>
+          </View>
+        </TouchableHighlight>
+      </View>
+    </KeyboardAwareScrollView>
   )
 }
 
