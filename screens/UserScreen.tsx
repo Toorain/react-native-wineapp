@@ -1,5 +1,5 @@
 
-import {Button, FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Button, FlatList, Image, StyleSheet, Text, TouchableOpacity, View, RefreshControl} from "react-native";
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import { SearchBar } from 'react-native-elements';
@@ -10,7 +10,7 @@ import Placeholder from "../components/PlaceholderImage";
 //   const { signOut }: any = React.useContext(AuthContext);
 
 
-export default class UserScreen extends Component<{}, { usersList: any, searchList : any, numColumns: any, searchText : any, item : any }> {
+export default class UserScreen extends Component<{}, { usersList: any, searchList : any, numColumns: any, searchText : any, item : any, refreshing: boolean }> {
   constructor() {
     // @ts-ignore
     super();
@@ -20,17 +20,23 @@ export default class UserScreen extends Component<{}, { usersList: any, searchLi
       searchText : null,
       numColumns: 0,
       item: null,
+      refreshing: false,
     }
   }
+
+  _onRefresh = () => {
+    this.getTokenFunction()
+  }
+
 
 
   getTokenFunction = () => {
     AsyncStorage.getItem('token').then(value => {
-      this.getAllItems(value);
+      this.getAllUsers(value);
     });
   }
 
-  getAllItems = (token: string | null) => {
+  getAllUsers = (token: string | null) => {
     fetch('http://146.59.156.251:3000/users/all', {
       method: 'GET',
       headers: {
@@ -158,6 +164,12 @@ export default class UserScreen extends Component<{}, { usersList: any, searchLi
               data={this.state.searchList}
               renderItem={this._renderItem}
               keyExtractor={ item => item._id }
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh.bind(this)}
+                />
+              }
             />
           ): (
             <Text>No users or error</Text>
