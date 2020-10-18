@@ -9,7 +9,7 @@ import {RadioButton} from "react-native-paper";
 
 
 const UserCreationScreen = ({navigation, route}: any, props: any) => {
-  const [checked, setChecked] = React.useState('');
+  const [checked, setChecked] = React.useState('salle');
   const { signOut }: any = React.useContext(AuthContext);
   const item = route.params;
   const [formValues, handleFormValueChange, setFormValues] = formData({
@@ -19,7 +19,6 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
     last_name:'',
   })
 
-  let roles: string | never[] = [];
 
   useEffect(() => {
     console.log(item);
@@ -28,21 +27,30 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
       setToken(tokenValue);
     });
   })
+  
+  let roles: string[] = [];
 
-  const checkRole = () => {
-    
+  const addCheckRoleToArray = () => {
+    if (checked === 'admin') {
+      roles.push('admin', 'econome', 'salle')
+    } else if (checked === 'econome') {
+      roles.push('econome', 'salle')
+    } else {
+      roles.push ('salle')
+    }
   };
 
   const [token, setToken]: any = React.useState('');
 
   const checkFormAndValid = () => {
+    addCheckRoleToArray()
     for (const elm in formValues) {
       if (formValues[elm] === null) {
         delete formValues[elm];
       }
     }
     if (formValues.username !== '' && formValues.password !== '' && formValues.first_name !== ''
-      && formValues.last_name !== '' && roles !== '')
+      && formValues.last_name !== '' && roles.length > 0)
     {
       fetch('http://146.59.156.251:3000/users/create', {
         method: 'POST',
@@ -131,29 +139,29 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
                     <View>
                       <View style={styles.buttonContainer}>
                         <RadioButton
-                          value="salle"
-                          status={ checked === 'salle' ? 'checked' : 'unchecked' }
-                          onPress={() => setChecked('salle')}
-                        />
-                        <Text 
-                        style={styles.buttonText}
-                        onPress={() => setChecked('salle')}>Salle</Text>
-                      </View>
-                      <View style={styles.buttonContainer}>
-                        <RadioButton
-                          value="econome"
-                          status={ checked === 'econome' ? 'checked' : 'unchecked' }
-                          onPress={() => setChecked('econome')}
-                        />
-                        <Text 
-                        style={styles.buttonText} 
-                        onPress={() => setChecked('econome')}>Econome</Text>
-                      </View>
-                      <View style={styles.buttonContainer}>
-                        <RadioButton
-                          value="admin"
-                          status={ checked === 'admin' ? 'checked' : 'unchecked' }
-                          onPress={() => setChecked('admin')}
+                            value="salle"
+                            status={ checked === 'salle' ? 'checked' : 'unchecked' }
+                            onPress={() => setChecked('salle')}
+                          />
+                          <Text 
+                          style={styles.buttonText}
+                          onPress={() => setChecked('salle')}>Salle</Text>
+                        </View>
+                        <View style={styles.buttonContainer}>
+                          <RadioButton
+                            value="econome"
+                            status={ checked === 'econome' ? 'checked' : 'unchecked' }
+                            onPress={() => setChecked('econome')}
+                          />
+                          <Text 
+                          style={styles.buttonText} 
+                          onPress={() => setChecked('econome')}>Econome</Text>
+                        </View>
+                        <View style={styles.buttonContainer}>
+                          <RadioButton
+                            value="admin"
+                            status={ checked === 'admin' ? 'checked' : 'unchecked' }
+                            onPress={() => setChecked('admin')}
                         />
                         <Text 
                         style={styles.buttonText} 
@@ -191,7 +199,7 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
 
 const styles = StyleSheet.create({
   buttonText: {
-    fontSize: 19,
+    fontSize: 24,
   },
   block: {
     padding: 10,
@@ -204,7 +212,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: "center",
-    marginBottom: 8,
+    marginBottom: 15,
   },
   header: {
     fontSize: 20,
