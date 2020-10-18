@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     marginVertical: 8
   },
   formFieldWrapper: {
-
+    marginBottom: 7,
   },
   formFieldText: {
     fontSize: 20,
