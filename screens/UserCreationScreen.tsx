@@ -9,7 +9,7 @@ import {RadioButton} from "react-native-paper";
 
 
 const UserCreationScreen = ({navigation, route}: any, props: any) => {
-  const [checked, setChecked] = React.useState('salle');
+  const [checked, setChecked] = React.useState('');
   const { signOut }: any = React.useContext(AuthContext);
   const item = route.params;
   const [formValues, handleFormValueChange, setFormValues] = formData({
@@ -17,8 +17,9 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
     password:'',
     first_name:'',
     last_name:'',
-    roles:{},
   })
+
+  let roles: string | never[] = [];
 
   useEffect(() => {
     console.log(item);
@@ -27,6 +28,10 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
       setToken(tokenValue);
     });
   })
+
+  const checkRole = () => {
+    
+  };
 
   const [token, setToken]: any = React.useState('');
 
@@ -37,7 +42,7 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
       }
     }
     if (formValues.username !== '' && formValues.password !== '' && formValues.first_name !== ''
-      && formValues.last_name !== '' && formValues.roles !== '')
+      && formValues.last_name !== '' && roles !== '')
     {
       fetch('http://146.59.156.251:3000/users/create', {
         method: 'POST',
@@ -51,7 +56,7 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
           password: formValues.password,
           first_name: formValues.first_name,
           last_name: formValues.last_name,
-          roles: formValues.roles,
+          roles: roles,
         })
       }).then(res => {
         if (res.status === 201) {
@@ -126,28 +131,33 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
                     <View>
                       <View style={styles.buttonContainer}>
                         <RadioButton
-                          
                           value="salle"
-                          status='checked'
+                          status={ checked === 'salle' ? 'checked' : 'unchecked' }
                           onPress={() => setChecked('salle')}
                         />
-                        <Text style={styles.buttonText}>Salle</Text>
+                        <Text 
+                        style={styles.buttonText}
+                        onPress={() => setChecked('salle')}>Salle</Text>
                       </View>
                       <View style={styles.buttonContainer}>
                         <RadioButton
                           value="econome"
-                          status='unchecked'
+                          status={ checked === 'econome' ? 'checked' : 'unchecked' }
                           onPress={() => setChecked('econome')}
                         />
-                        <Text style={styles.buttonText}>Econome</Text>
+                        <Text 
+                        style={styles.buttonText} 
+                        onPress={() => setChecked('econome')}>Econome</Text>
                       </View>
                       <View style={styles.buttonContainer}>
                         <RadioButton
                           value="admin"
-                          status='unchecked'
+                          status={ checked === 'admin' ? 'checked' : 'unchecked' }
                           onPress={() => setChecked('admin')}
                         />
-                        <Text style={styles.buttonText}>Admin</Text>
+                        <Text 
+                        style={styles.buttonText} 
+                        onPress={() => setChecked('admin')}>Admin</Text>
                       </View>
                     </View>
                     {/* <TextInput
