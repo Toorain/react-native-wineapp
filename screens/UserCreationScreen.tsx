@@ -131,7 +131,7 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
                           status='checked'
                           onPress={() => setChecked('salle')}
                         />
-                        <Text>Salle</Text>
+                        <Text style={styles.buttonText}>Salle</Text>
                       </View>
                       <View style={styles.buttonContainer}>
                         <RadioButton
@@ -139,7 +139,7 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
                           status='unchecked'
                           onPress={() => setChecked('econome')}
                         />
-                        <Text>Econome</Text>
+                        <Text style={styles.buttonText}>Econome</Text>
                       </View>
                       <View style={styles.buttonContainer}>
                         <RadioButton
@@ -147,7 +147,7 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
                           status='unchecked'
                           onPress={() => setChecked('admin')}
                         />
-                        <Text>Admin</Text>
+                        <Text style={styles.buttonText}>Admin</Text>
                       </View>
                     </View>
                     {/* <TextInput
@@ -180,6 +180,9 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
 }
 
 const styles = StyleSheet.create({
+  buttonText: {
+    fontSize: 19,
+  },
   block: {
     padding: 10,
   },
@@ -190,7 +193,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: "center"
+    alignItems: "center",
+    marginBottom: 8,
   },
   header: {
     fontSize: 20,
