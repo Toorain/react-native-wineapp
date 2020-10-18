@@ -1,5 +1,5 @@
 import React,{useEffect} from "react";
-import {View, StyleSheet, Text, ScrollView, Alert, Button, AsyncStorage} from "react-native";
+import {View, StyleSheet, Text, ScrollView, Alert, Button, AsyncStorage, TextInput} from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {AuthContext} from "../App";
 import FormField from '../components/FormField';
@@ -30,12 +30,11 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
   const [token, setToken]: any = React.useState('');
 
   const checkFormAndValid = () => {
-    // let userObj: any =  formData();
-    // for (const elm in userObj) {
-    //   if (userObj[elm] === null) {
-    //     delete userObj[elm];
-    //   }
-    // }
+    for (const elm in formValues) {
+      if (formValues[elm] === null) {
+        delete formValues[elm];
+      }
+    }
     if (formValues.username !== '' && formValues.password !== '' && formValues.first_name !== ''
       && formValues.last_name !== '' && formValues.roles !== '')
     {
@@ -51,7 +50,7 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
           password: formValues.password,
           first_name: formValues.first_name,
           last_name: formValues.last_name,
-          roles: '',
+          roles: formValues.roles,
         })
       }).then(res => {
         if (res.status === 201) {
@@ -116,13 +115,23 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
 
           handleFormValueChange={handleFormValueChange}
         />
-        <FormField
-          label='Roles'
-          formKey='roles'
-          placeholder=''
-
-          handleFormValueChange={handleFormValueChange}
-        />
+            <View style={styles.formFieldWrapper}>
+              <View style={styles.textWrapper}>  
+                <View style={styles.horizontalSplit}>
+                  <View style={styles.horizontalColumn}>
+                  <Text style={styles.labelText}>Rôle(s)</Text>
+                  </View>
+                  <View style={styles.horizontalColumn}>
+                    <TextInput
+                        placeholder=''
+                        style={styles.formFieldText}
+                        onChange={(event) => props.handleFormValueChange('roles', event.nativeEvent.text)}
+                        {...props.textInputProps}
+                    /> 
+                  </View>
+                </View>
+              </View>
+            </View>
         {/* <Text style={styles.header}>Values in Hook: </Text>
         <View>
           <Text style={styles.formText}>Username is : {formValues.username}</Text>
@@ -158,7 +167,40 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 10,
     paddingLeft: 0
+  },
+  textWrapper: {
+  },
+  horizontalSplit: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: '95%',
+    marginTop: '2%',
+  },
+  horizontalColumn: {
+    width: "4%",
+    flex:1,
+    justifyContent: "space-evenly",
+  },
+  text: {
+    fontSize: 18,
+    marginVertical: 8
+  },
+  formFieldWrapper: {
+
+  },
+  formFieldText: {
+    fontSize: 20,
+    borderRadius: 7,
+    borderWidth: 1,
+    padding: 12
+  },
+  labelText: {
+    fontSize: 20,
+    marginBottom: 12,
+    paddingLeft: 10,
+    paddingTop: 10
   }
+
 })
 
 export default UserCreationScreen;
