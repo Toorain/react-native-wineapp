@@ -119,7 +119,7 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
             <View style={styles.formFieldWrapper}>
               <View style={styles.textWrapper}>  
                 <View style={styles.horizontalSplit}>
-                  <View style={styles.horizontalColumn}>
+                  <View style={styles.horizontalColumnRoles}>
                   <Text style={styles.labelText}>Rôle(s)</Text>
                   </View>
                   <View style={styles.horizontalColumn}>
@@ -213,6 +213,10 @@ const styles = StyleSheet.create({
     width: "4%",
     flex:1,
     justifyContent: "space-evenly",
+  },
+  horizontalColumnRoles: {
+    width: "40%",
+    flex:1,
   },
   text: {
     fontSize: 18,
