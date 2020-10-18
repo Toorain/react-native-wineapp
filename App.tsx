@@ -13,6 +13,10 @@ import ProductsDetails from "./screens/ProductsDetails";
 import AddProduct from "./screens/AddProductScreen";
 import AddPicture from "./screens/AddPictureScreen";
 import PicturePreview from "./screens/PicturePreviewScreen";
+import UserScreen from "./screens/UserScreen";
+import UserCreationScreen from './screens/UserCreationScreen';
+import UserDetails from './screens/UserDetails';
+import UserEditScreen from './screens/UserEditScreen';
 
 // @ts-ignore
 export const AuthContext = React.createContext();
@@ -142,6 +146,10 @@ export default function App({ navigation }: any) {
                 <Stack.Screen name="Ajouter un produit" component={AddProduct} />
                 <Stack.Screen name="PicturePreview" component={PicturePreview} />
                 <Stack.Screen name="Ajouter une photo" component={AddPicture} />
+                <Stack.Screen name="Utilisateurs" options={{ title:"Liste d'utilisateurs" }} component={UserScreen} />
+                <Stack.Screen name="UserCreationScreen" options={{ title:"Création d'utilisateur" }} component={UserCreationScreen} />
+                <Stack.Screen name="UserDetails" options={{ title:"Utilisateur : détail" }} component={UserDetails} />
+                <Stack.Screen name="EditUser" options={{ title:"Éditer utilisateur" }} component={UserEditScreen} />
               </>
             ) : (
               // No token found, user isn't signed in

@@ -187,6 +187,26 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
     );
   };
 
+
+  renderHeaderButtonsWrapper = () => {
+    return (
+      <View style= {styles.headerButtonsWrapper}>
+          <Button
+            title={'Ajouter Produit'}
+            onPress={() => {
+            // @ts-ignore
+            this.props.navigation.navigate('Ajouter un produit');
+          }} />
+          <Button
+            title={'Admin'}
+            onPress={() => {
+              // @ts-ignore
+              this.props.navigation.navigate('Utilisateurs',);
+          }} />
+        </View>
+    )
+  }
+
   render() {
     return (
       <View
@@ -200,16 +220,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       style={styles.flatlist}
       >
         { this.renderSearchbarHeader() }
-        <TouchableHighlight
-          style={styles.ajouter}
-          onPress={() => {
-            // @ts-ignore
-            this.props.navigation.navigate('Ajouter un produit');
-          }} >
-          <View>
-            <Text style={styles.addText}>Ajouter un produit</Text>
-          </View>
-        </TouchableHighlight>
+        { this.renderHeaderButtonsWrapper()}
         {this.state.productList !== null ? (
             <FlatList
               key={this.state.numColumns}
@@ -233,6 +244,12 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
 }
 
 const styles = StyleSheet.create({
+  headerButtonsWrapper: {
+    flexDirection: 'row',
+    justifyContent: "space-around",
+    width: "45%",
+    alignItems: "center",
+  },
   ajouter : {
     backgroundColor: 'green',
     width: '100%',
