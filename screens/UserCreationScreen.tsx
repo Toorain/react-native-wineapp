@@ -9,6 +9,7 @@ import {RadioButton} from "react-native-paper";
 
 
 const UserCreationScreen = ({navigation, route}: any, props: any) => {
+  const [checked, setChecked] = React.useState('salle');
   const { signOut }: any = React.useContext(AuthContext);
   const item = route.params;
   const [formValues, handleFormValueChange, setFormValues] = formData({
@@ -123,17 +124,31 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
                   </View>
                   <View style={styles.horizontalColumn}>
                     <View>
-                      <RadioButton
-                        
-                        value="first"
-                        // status={ checked === 'first' ? 'checked' : 'unchecked' }
-                        // onPress={() => setChecked('first')}
-                      />
-                      <RadioButton
-                        value="second"
-                        // status={ checked === 'second' ? 'checked' : 'unchecked' }
-                        // onPress={() => setChecked('second')}
-                      />
+                      <View style={styles.buttonContainer}>
+                        <RadioButton
+                          
+                          value="salle"
+                          // status={ checked === 'first' ? 'checked' : 'unchecked' }
+                          // onPress={() => setChecked('first')}
+                        />
+                        <Text>Salle</Text>
+                      </View>
+                      <View style={styles.buttonContainer}>
+                        <RadioButton
+                          value="econome"
+                          // status={ checked === 'second' ? 'checked' : 'unchecked' }
+                          // onPress={() => setChecked('second')}
+                        />
+                        <Text>Econome</Text>
+                      </View>
+                      <View style={styles.buttonContainer}>
+                        <RadioButton
+                          value="admin"
+                          // status={ checked === 'second' ? 'checked' : 'unchecked' }
+                          // onPress={() => setChecked('second')}
+                        />
+                        <Text>Admin</Text>
+                      </View>
                     </View>
                     {/* <TextInput
                         placeholder=''
@@ -171,6 +186,11 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     margin: 20,
+  },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: "center"
   },
   header: {
     fontSize: 20,
