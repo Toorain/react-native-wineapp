@@ -4,12 +4,14 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import {AuthContext} from "../App";
 import FormField from '../components/FormField';
 import {formData} from '../components/formData';
-import {RadioButton} from "react-native-paper";
+import {Checkbox} from "react-native-paper";
 // import Collapsible from "react-native-collapsible";
 
 
 const UserCreationScreen = ({navigation, route}: any, props: any) => {
-  const [checked, setChecked] = React.useState('');
+  const [salleChecked, setSalleChecked] = React.useState(false);
+  const [economeChecked, setEconomeChecked] = React.useState(false);
+  const [adminChecked, setAdminChecked] = React.useState(false);
   const { signOut }: any = React.useContext(AuthContext);
   const item = route.params;
   const [formValues, handleFormValueChange, setFormValues] = formData({
@@ -130,34 +132,31 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
                   <View style={styles.horizontalColumn}>
                     <View>
                       <View style={styles.buttonContainer}>
-                        <RadioButton
-                          value="salle"
-                          status={ checked === 'salle' ? 'checked' : 'unchecked' }
-                          onPress={() => setChecked('salle')}
+                        <Checkbox
+                          status={salleChecked ? 'checked' : 'unchecked'}
+                          onPress={() => {
+                            setSalleChecked(!salleChecked);
+                          }}
                         />
-                        <Text 
-                        style={styles.buttonText}
-                        onPress={() => setChecked('salle')}>Salle</Text>
+                        <Text style={styles.buttonText}>Salle</Text>
                       </View>
                       <View style={styles.buttonContainer}>
-                        <RadioButton
-                          value="econome"
-                          status={ checked === 'econome' ? 'checked' : 'unchecked' }
-                          onPress={() => setChecked('econome')}
+                        <Checkbox
+                            status={economeChecked ? 'checked' : 'unchecked'}
+                            onPress={() => {
+                              setEconomeChecked(!economeChecked);
+                            }}
                         />
-                        <Text 
-                        style={styles.buttonText} 
-                        onPress={() => setChecked('econome')}>Econome</Text>
+                        <Text style={styles.buttonText}>Econome</Text>
                       </View>
-                      <View style={styles.buttonContainer}>
-                        <RadioButton
-                          value="admin"
-                          status={ checked === 'admin' ? 'checked' : 'unchecked' }
-                          onPress={() => setChecked('admin')}
+                      <View style={styles.buttonContainer}> 
+                        <Checkbox
+                            status={adminChecked ? 'checked' : 'unchecked'}
+                            onPress={() => {
+                              setAdminChecked(!adminChecked);
+                            }}
                         />
-                        <Text 
-                        style={styles.buttonText} 
-                        onPress={() => setChecked('admin')}>Admin</Text>
+                        <Text style={styles.buttonText}>Admin</Text>
                       </View>
                     </View>
                     {/* <TextInput
