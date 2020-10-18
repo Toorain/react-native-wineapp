@@ -1,5 +1,5 @@
 import React from "react";
-import {View, StyleSheet, Text, ScrollView, Alert} from "react-native";
+import {View, StyleSheet, Text, ScrollView, Alert, Button} from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {AuthContext} from "../App";
 import FormField from '../components/FormField';
@@ -25,8 +25,8 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
         delete userObj[elm];
       }
     }
-    if (username !== '' && password !== '' && first_name !== ''
-      && last_name !== '' && roles !== '')
+    if (formValues.username !== '' && formValues.password !== '' && formValues.first_name !== ''
+      && formValues.last_name !== '' && formValues.roles !== '')
     {
       fetch('http://146.59.156.251:3000/users/create', {
         method: 'POST',
@@ -36,11 +36,11 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
           'Authorization': 'Bearer ' + token,
         },
         body: JSON.stringify({
-          username: username,
-          year: year,
-          color: color,
-          cepage: cepagesObj,
-          label_img: '',
+          username: formValues.username,
+          password: formValues.password,
+          first_name: formValues.first_name,
+          last_name: formValues.last_name,
+          roles: '',
         })
       }).then(res => {
         if (res.status === 201) {
