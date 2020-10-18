@@ -144,7 +144,7 @@ export default function App({ navigation }: any) {
                 <Stack.Screen name="ProductImage" component={ProductImage} />
                 <Stack.Screen name="ProductsDetails" component={ProductsDetails} />
                 <Stack.Screen name="Utilisateurs" options={{ title:"Liste d'utilisateurs" }} component={UserScreen} />
-                <Stack.Screen name="UserCreationScreen" options={{ title:"Création utilisateur" }} component={UserCreationScreen} />
+                <Stack.Screen name="UserCreationScreen" options={{ title:"Création d'utilisateur" }} component={UserCreationScreen} />
                 <Stack.Screen name="UserDetails" options={{ title:"Utilisateur : détail" }} component={UserDetails} />
                 <Stack.Screen name="EditUser" options={{ title:"Éditer utilisateur" }} component={UserEditScreen} />
                 
