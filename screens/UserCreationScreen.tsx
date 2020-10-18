@@ -112,14 +112,14 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
 
           handleFormValueChange={handleFormValueChange}
         />
-        <Text style={styles.header}>Values in Hook: </Text>
+        {/* <Text style={styles.header}>Values in Hook: </Text>
         <View>
           <Text style={styles.formText}>Username is : {formValues.username}</Text>
           <Text style={styles.formText}>Password is: {formValues.password}</Text>
           <Text style={styles.formText}>first_name is: {formValues.first_name}</Text>
           <Text style={styles.formText}>last_name is: {formValues.last_name}</Text>
           <Text style={styles.formText}>Roles is: {formValues.roles}</Text>
-        </View>
+        </View> */}
         <View style={styles.block}>
           <Button
             title={'Ajouter le produit'}
