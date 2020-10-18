@@ -122,12 +122,25 @@ const UserCreationScreen = ({navigation, route}: any, props: any) => {
                   <Text style={styles.labelText}>Rôle(s)</Text>
                   </View>
                   <View style={styles.horizontalColumn}>
-                    <TextInput
+                    <View>
+                      <RadioButton
+                        
+                        value="first"
+                        // status={ checked === 'first' ? 'checked' : 'unchecked' }
+                        // onPress={() => setChecked('first')}
+                      />
+                      <RadioButton
+                        value="second"
+                        // status={ checked === 'second' ? 'checked' : 'unchecked' }
+                        // onPress={() => setChecked('second')}
+                      />
+                    </View>
+                    {/* <TextInput
                         placeholder=''
                         style={styles.formFieldText}
                         onChange={(event) => props.handleFormValueChange('roles', event.nativeEvent.text)}
                         {...props.textInputProps}
-                    /> 
+                    />  */}
                   </View>
                 </View>
               </View>
