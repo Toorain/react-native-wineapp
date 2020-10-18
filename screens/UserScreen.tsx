@@ -1,32 +1,43 @@
-import {Button, FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+
+import {Button, FlatList, Image, StyleSheet, Text, TouchableOpacity, View, RefreshControl} from "react-native";
 import React, {Component} from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import { SearchBar } from 'react-native-elements';
 import CapitalizedText from "../components/CapitalizedText";
 import Placeholder from "../components/PlaceholderImage";
 
-export default class ProductsScreen extends Component<{}, { productList: any, searchList : any, numColumns: any, searchText : any, item : any }> {
+// const UserScreen = ({navigation, route}: any) => {
+//   const { signOut }: any = React.useContext(AuthContext);
+
+
+export default class UserScreen extends Component<{}, { usersList: any, searchList : any, numColumns: any, searchText : any, item : any, refreshing: boolean }> {
   constructor() {
     // @ts-ignore
     super();
     this.state = {
-      productList: [],
+      usersList: [],
       searchList: [],
       searchText : null,
       numColumns: 0,
       item: null,
+      refreshing: false,
     }
   }
+
+  _onRefresh = () => {
+    this.getTokenFunction()
+  }
+
 
 
   getTokenFunction = () => {
     AsyncStorage.getItem('token').then(value => {
-      this.getAllItems(value);
+      this.getAllUsers(value);
     });
   }
 
-  getAllItems = (token: string | null) => {
-    fetch('http://146.59.156.251:3000/products/getAll', {
+  getAllUsers = (token: string | null) => {
+    fetch('http://146.59.156.251:3000/users/all', {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -36,7 +47,7 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
     }).then(res => res.json())
       .then(json => {
         this.setState({
-          productList: json,
+          usersList: json,
           searchList: json });
       });
   }
@@ -44,15 +55,19 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
   searchFilterFunction = (text:string) => {
     if (text === ""){
       this.setState({
-        item: this.state.productList
+        item: this.state.usersList
       })
     }
     this.setState({
       item: text,
     });
 
-    const newData = this.state.productList.filter((item : any) => {
-      const itemData = item.brand_name.toUpperCase() + item.year + item.color.toUpperCase();
+    const newData = this.state.usersList.filter((item : any) => {
+      const itemData = 
+        item.username.toUpperCase() + 
+        item.first_name.toUpperCase() + 
+        item.last_name.toUpperCase() + 
+        item.roles.map((elm: string) => elm.toUpperCase());
       const textData = text.toUpperCase();
 
       return itemData.indexOf(textData) > -1;
@@ -70,29 +85,31 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
 //renderItem
   _renderItem = ({ item }: any) => (
     <View style={styles.itemWrapper}>
-      <View style={styles.imageWrapper}>
-        <TouchableOpacity onPress={() => {
-          // @ts-ignore
-          this.props.navigation.navigate('ProductImage', item.brand_name);
-        }}>
-          { item.product_img !== "" ? (
-            <Image
-              style={styles.image}
-              source={{ uri: 'http://146.59.156.251:3000/images/bottleImg' + item.product_img }} />
-          ) : (
-            <Placeholder style={styles.image} />
-          ) }
-        </TouchableOpacity>
-      </View>
       <TouchableOpacity style={styles.textWrapper} onPress={() => {
         // @ts-ignore
-        this.props.navigation.navigate('ProductsDetails', item);
+        this.props.navigation.navigate('UserDetails', item);
       }}>
-        <CapitalizedText style={styles.textTitle}>{item.brand_name}</CapitalizedText>
-          <Text style={styles.text}>{item.year}</Text>
-          <CapitalizedText style={styles.text}>{item.color}</CapitalizedText>
-          <Text style={styles.importantInfoText}>{item.sell_price_ht} €</Text>
-          <Text style={styles.importantInfoText}>Qté : {item.quantity}</Text>
+        <CapitalizedText style={styles.textMain}>{item.username}</CapitalizedText>
+        <View style={styles.textWrapper}>  
+          <View style={styles.horizontalSplit}>
+            <View style={styles.horizontalColumn}> 
+              <Text style={styles.text}>Nom :</Text>
+              <Text style={styles.text}>Prénom :</Text>
+            </View>
+            <View style={styles.horizontalColumn}> 
+              <Text style={styles.text}>{item.first_name}</Text>
+              <Text style={styles.text}>{item.last_name}</Text>
+            </View>
+          </View>
+          <View style={styles.horizontalSplit}>
+            <View style={styles.horizontalColumnRoles}> 
+              <Text style={styles.text}>Rôle(s) :</Text>
+            </View>
+            <View style={styles.horizontalColumn}>
+              {item.roles.map((elm: string) => <Text key={elm}>{"▷ " + elm}</Text> )}
+            </View>
+          </View>
+        </View>
       </TouchableOpacity>
     </View>
   )
@@ -113,24 +130,21 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
 
   renderHeaderButtonsWrapper = () => {
     return (
+      
       <View style= {styles.headerButtonsWrapper}>
           <Button
-            title={'Ajouter'}
-            onPress={() => {
-
-          }} />
-          <Button
-            title={'Admin'}
+            title={'Ajouter utilisateur'}
             onPress={() => {
               // @ts-ignore
-              this.props.navigation.navigate('Utilisateurs',);
+              this.props.navigation.navigate('UserCreationScreen');
           }} />
-        </View>
+      </View>
     )
   }
 
   render() {
     return (
+      
       <View
       onLayout={(event) => {
         const {width} = event.nativeEvent.layout;
@@ -143,16 +157,22 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
       >
         { this.renderSearchbarHeader() }
         { this.renderHeaderButtonsWrapper()}
-        {this.state.productList !== null ? (
+        {this.state.usersList !== null ? (
             <FlatList
               key={this.state.numColumns}
               numColumns={this.state.numColumns}
               data={this.state.searchList}
               renderItem={this._renderItem}
               keyExtractor={ item => item._id }
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh.bind(this)}
+                />
+              }
             />
           ): (
-            <Text>No products or error</Text>
+            <Text>No users or error</Text>
         )}
       </View>
     )
@@ -160,30 +180,43 @@ export default class ProductsScreen extends Component<{}, { productList: any, se
 }
 
 const styles = StyleSheet.create({
+  textMain: {
+    textAlign: "center",
+    marginVertical: 8,
+    fontSize: 25,
+    marginLeft: -40,
+  },
+  horizontalColumnRoles: {
+    width: "40%",
+    flex:1,
+  },
+  horizontalColumn: {
+    width: "50%",
+    flex:1,
+    justifyContent: "space-evenly",
+  },
+  horizontalSplit: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: '90%',
+    marginTop: '3%',
+  },
   headerButtonsWrapper: {
     flexDirection: 'row',
     justifyContent: "space-around",
     width: "45%",
     alignItems: "center",
   },
-  ajouter : {
-    backgroundColor: 'green',
-
-  },
   flatlist: {
     alignItems: 'center',
     height: '100%',
-    marginBottom: 100
+    marginBottom: 300
   },
   searchbar: {
     width: '100%'
   },
   text: {
     fontSize: 16,
-  },
-  textTitle: {
-    fontSize: 20,
-    textAlign: "center"
   },
   importantInfoText: {
     fontSize: 20
@@ -194,20 +227,12 @@ const styles = StyleSheet.create({
     margin: 20,
     borderColor: 'black',
     borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: 7,
     flexDirection: 'row',
   },
-  image: {
-    height: 200,
-    width: 90,
-    margin: 30,
-    resizeMode: "contain"
-  },
   textWrapper: {
-    flex: 2,
-    marginTop: 10,
-    justifyContent: "space-around",
-    alignItems: "center",
+    marginLeft: "3%",
+    marginBottom: "2%",
   },
   imageWrapper: {
     flex: 1
