@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View} from 'react-native';
+import { LogBox, Text, View} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -17,6 +17,11 @@ import UserScreen from "./screens/UserScreen";
 import UserCreationScreen from './screens/UserCreationScreen';
 import UserDetails from './screens/UserDetails';
 import UserEditScreen from './screens/UserEditScreen';
+
+// Permet de ne pas afficher les warnings logs 
+// de fonctionnalités présentant des erreurs non critiques
+//
+// LogBox.ignoreLogs(['Require cycle:', 'Warning: Async Storage']);
 
 // @ts-ignore
 export const AuthContext = React.createContext();
