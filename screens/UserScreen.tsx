@@ -1,7 +1,7 @@
 
-import {Button, FlatList, Image, StyleSheet, Text, TouchableOpacity, View, RefreshControl} from "react-native";
+import {Button, FlatList, Image, StyleSheet, Text, TouchableOpacity, View, RefreshControl, AsyncStorage} from "react-native";
 import React, {Component} from "react";
-import AsyncStorage from "@react-native-community/async-storage";
+// import AsyncStorage from "@react-native-community/async-storage";
 import { SearchBar } from 'react-native-elements';
 import CapitalizedText from "../components/CapitalizedText";
 import Placeholder from "../components/PlaceholderImage";

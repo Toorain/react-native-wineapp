@@ -1,6 +1,6 @@
-import {Button, StyleSheet, Text, View} from "react-native";
+import {Button, StyleSheet, Text, View, AsyncStorage} from "react-native";
 import React, {Component} from "react";
-import AsyncStorage from "@react-native-community/async-storage";
+// import AsyncStorage from "@react-native-community/async-storage";
 
 export default class BasicScreenTemplate extends Component<{}, { getValue: string | null }> {
   constructor(props: {} | Readonly<{}>) {

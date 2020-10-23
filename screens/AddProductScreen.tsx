@@ -1,9 +1,9 @@
-import {Alert, Button, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Alert, Button, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View, AsyncStorage} from "react-native";
 import React, {useEffect} from "react";
 import {AuthContext} from "../App";
 import Collapsible from "react-native-collapsible";
 import {RadioButton} from "react-native-paper";
-import AsyncStorage, {useAsyncStorage} from "@react-native-community/async-storage";
+// import AsyncStorage, {useAsyncStorage} from "@react-native-community/async-storage";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 const AddProduct = ({navigation, route}: any) => {

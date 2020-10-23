@@ -8,10 +8,11 @@ import {
   Text,
   TouchableHighlight,
   TouchableOpacity,
-  View
+  View,
+  AsyncStorage
 } from "react-native";
 import React, {Component} from "react";
-import AsyncStorage from "@react-native-community/async-storage";
+// import AsyncStorage from "@react-native-community/async-storage";
 import {Icon, SearchBar} from 'react-native-elements';
 import CapitalizedText from "../components/CapitalizedText";
 import Placeholder from "../components/PlaceholderImage";

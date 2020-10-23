@@ -1,6 +1,6 @@
 import React from "react";
-import {View, Image, StyleSheet, Dimensions, Button, Alert, ScrollView} from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
+import {View, Image, StyleSheet, Dimensions, Button, Alert, ScrollView, AsyncStorage} from "react-native";
+// import AsyncStorage from "@react-native-community/async-storage";
 
 const PicturePreview = ({navigation, route}: any) => {
   const picture: any = route.params;
